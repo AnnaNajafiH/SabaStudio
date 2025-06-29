@@ -19,9 +19,9 @@ dotenv.config();
 const app = express();
 
 // Environment variables with defaults
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5174';
 
 // Security middleware
 app.use(helmet({
