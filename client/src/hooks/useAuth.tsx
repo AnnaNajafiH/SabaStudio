@@ -3,7 +3,8 @@ import { User, AuthState } from '../types';
 import { apiService } from '../services/api';
 
 interface AuthContextType extends AuthState {
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;   //Ithis  s async (because it returns a Promise)"
+
   logout: () => void;
   checkAuth: () => Promise<void>;
 }
