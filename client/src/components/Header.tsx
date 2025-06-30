@@ -27,7 +27,7 @@ const Header = () => {
               <span className="text-white font-bold text-lg font-serif">S</span>
             </div>
             <span className="text-xl font-serif font-semibold text-primary-900">
-              SabaArchitect
+            S-Studio
             </span>
           </Link>
 

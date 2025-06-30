@@ -13,7 +13,7 @@ const Footer = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-accent-600 to-accent-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg font-serif">S</span>
               </div>
-              <span className="text-xl font-serif font-semibold">SabaArchitect</span>
+              <span className="text-xl font-serif font-semibold">S-Studio</span>
             </Link>
             <p className="text-primary-300 mb-6 max-w-md">
               Creating exceptional architectural designs that blend innovation with functionality. 
@@ -86,7 +86,7 @@ const Footer = () => {
                 <svg className="w-5 h-5 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span>info@sabaarchitect.com</span>
+                <span>info@SStudio.com</span>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-primary-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-primary-400 text-sm">
-            © {currentYear} SabaArchitect. All rights reserved.
+            © {currentYear} S-Studio. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy" className="text-primary-400 hover:text-accent-400 text-sm transition-colors">
