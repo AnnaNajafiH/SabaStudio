@@ -4,11 +4,11 @@ const About = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-900 to-accent-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-primary-600 to-accent-300 text-white">
         <div className="container-max section-padding">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
-              About SabaArchitect
+              About S-Studio
             </h1>
             <p className="text-xl md:text-2xl opacity-90">
               Creating timeless architectural solutions with passion, precision, and purpose.
@@ -47,7 +47,7 @@ const About = () => {
               <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden">
                 <img
                   src="/api/placeholder/600/600"
-                  alt="Architecture studio"
+                  alt="S Studio"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -142,12 +142,12 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="card text-center">
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="card text-center py-10">
               <div className="w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mx-auto mb-6 overflow-hidden">
                 <img
                   src="/api/placeholder/200/200"
-                  alt="Saba Architect"
+                  alt="S-Studio"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -161,14 +161,14 @@ const About = () => {
                   </svg>
                 </div>
               </div>
-              <h3 className="text-xl font-semibold text-primary-900 mb-2">Saba Ahmadi</h3>
+              <h3 className="text-xl font-semibold text-primary-900 mb-2">Saba Najafi</h3>
               <p className="text-accent-600 font-medium mb-4">Principal Architect & Founder</p>
               <p className="text-gray-600 text-sm">
                 With over 15 years of experience, Saba leads our design vision and ensures every project meets our high standards of excellence.
               </p>
             </div>
 
-            <div className="card text-center">
+            <div className="card text-center py-10">
               <div className="w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mx-auto mb-6 overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                   <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,25 +176,10 @@ const About = () => {
                   </svg>
                 </div>
               </div>
-              <h3 className="text-xl font-semibold text-primary-900 mb-2">Michael Chen</h3>
+              <h3 className="text-xl font-semibold text-primary-900 mb-2">Elham Najafi</h3>
               <p className="text-accent-600 font-medium mb-4">Senior Project Manager</p>
               <p className="text-gray-600 text-sm">
-                Michael oversees project execution and client relations, ensuring seamless delivery from concept to completion.
-              </p>
-            </div>
-
-            <div className="card text-center">
-              <div className="w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mx-auto mb-6 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-              </div>
-              <h3 className="text-xl font-semibold text-primary-900 mb-2">Sarah Johnson</h3>
-              <p className="text-accent-600 font-medium mb-4">Lead Design Architect</p>
-              <p className="text-gray-600 text-sm">
-                Sarah brings creativity and technical expertise to our residential and commercial design projects.
+                Elham oversees project execution and client relations, ensuring seamless delivery from concept to completion.
               </p>
             </div>
           </div>
