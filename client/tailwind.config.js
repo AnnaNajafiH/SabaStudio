@@ -34,6 +34,10 @@ export default {
           700: '#d4af37',
           800: '#b8941f',
           900: '#9a7c1a',
+        },
+        custom: {
+          DEFAULT: '#a4a2a3',
+          logo: '#a4a2a3',
         }
       },
       animation: {

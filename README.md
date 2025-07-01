@@ -23,10 +23,15 @@ SabaArchitect/
 - **Tailwind CSS** 
 
 ### Backend (Server)
-- **Node.js** 
-- **Express** 
-- **TypeScript** 
-- **MongoDB** 
+- **Node.js** - Runtime environment
+- **Express** - Web framework
+- **TypeScript** - Type-safe development
+- **MongoDB** - Database with Mongoose ODM
+- **Nodemailer** - Email service integration
+- **Express-validator** - Input validation
+- **Express-rate-limit** - Rate limiting middleware
+- **JWT** - Authentication tokens
+- **Bcrypt** - Password hashing 
 
 ### DevOps
 - **Docker** - Containerization
@@ -59,15 +64,27 @@ SabaArchitect/
    npm install
    ```
 
-3. **Start development servers**
+3. **Environment Setup**
+   ```bash
+   # Server environment
+   cd server
+   cp .env.example .env
+   # Edit .env with your MongoDB URI and email credentials
+   ```
+
+4. **Start development servers**
    ```bash
    # Terminal 1 - Start client
    cd client
    npm run dev
    
-   # Terminal 2 - Start server
+   # Terminal 2 - Start server (full setup)
    cd server
    npm run dev
+   
+   # OR Terminal 2 - Start test server (no database required)
+   cd server
+   npm run test-server
    ```
 
 ### Docker Setup
@@ -101,16 +118,33 @@ SabaArchitect/
 - Docker Compose configuration
 - Environment-specific configurations
 
-## 🎯 Features (Planned)
+## 🎯 Features
 
+### ✅ Completed
+- [x] **Contact Form** - Fully functional with validation and email notifications
+- [x] **Email Service** - Professional email templates with Nodemailer
+- [x] **Admin API** - Contact management with CRUD operations
+- [x] **Rate Limiting** - Anti-spam protection for forms
+- [x] **Input Validation** - Comprehensive form validation
+- [x] **Error Handling** - Robust error handling and user feedback
+- [x] **Responsive Design** - Mobile-first responsive layout
+- [x] **TypeScript** - Full type safety across the application
+
+### 🚧 In Progress
 - [ ] Project portfolio showcase
 - [ ] Client management system
 - [ ] Project timeline tracking
 - [ ] Document and image management
-- [ ] Contact and inquiry forms
-- [ ] Admin dashboard
-- [ ] Responsive design
+- [ ] Admin dashboard UI
+- [ ] Authentication system
 - [ ] SEO optimization
+
+### 💡 Planned
+- [ ] Project filtering and search
+- [ ] Image gallery with lightbox
+- [ ] Blog/news section
+- [ ] Multi-language support
+- [ ] Analytics integration
 
 ## 🔧 Development
 

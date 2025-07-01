@@ -17,10 +17,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className=" text-white py-20 bg-cover bg-center bg-no-repeat relative"
-       style={{
-         backgroundImage: 'url("../../public/images/hero-bg.jpg")',
-          }}> 
+      <section className="bg-custom text-white py-20">
         <div className="container-max section-padding">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">

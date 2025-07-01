@@ -23,12 +23,17 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-900 to-accent-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg font-serif">S</span>
+            <div className="w-11 h-4 flex items-center justify-center"
+            style={{
+              backgroundImage: 'url("../../public/images/logo.jpg")',
+              backgroundSize: 'cover',
+              borderRadius: '0px',
+               }}>
+
             </div>
-            <span className="text-xl font-serif font-semibold text-primary-900">
-            S-Studio
-            </span>
+            {/* <span className="text-xl font-serif font-semibold text-primary-900">
+            S\Studio
+            </span> */}
           </Link>
 
           {/* Desktop Navigation */}
