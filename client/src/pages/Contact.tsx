@@ -1,17 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { apiService } from '../services/api';
-
-interface ContactFormData {
-  name: string;
-  email: string;
-  phone: string;
-  company: string;
-  projectType: string;
-  budget: string;
-  timeline: string;
-  location: string;
-  message: string;
-}
+import { ContactFormData, ProjectType, BudgetRange, Timeline } from '../types';
 
 const Contact = () => {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -29,7 +18,7 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const projectTypes = [
+  const projectTypes: ProjectType[] = [
     'Residential Design',
     'Commercial Architecture',
     'Interior Design',
@@ -39,7 +28,7 @@ const Contact = () => {
     'Other'
   ];
 
-  const budgetRanges = [
+  const budgetRanges: BudgetRange[] = [
     'Under $100k',
     '$100k - $250k',
     '$250k - $500k',
@@ -49,7 +38,7 @@ const Contact = () => {
     'To be determined'
   ];
 
-  const timelines = [
+  const timelines: Timeline[] = [
     'ASAP',
     '1-3 months',
     '3-6 months',

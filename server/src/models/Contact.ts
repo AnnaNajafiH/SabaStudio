@@ -5,6 +5,11 @@ export interface IContact extends Document {
   name: string;
   email: string;
   phone?: string;
+  company?: string;
+  projectType?: string;
+  budget?: string;
+  timeline?: string;
+  location?: string;
   subject: string;
   message: string;
   status: 'new' | 'read' | 'replied' | 'archived';
@@ -47,6 +52,54 @@ const contactSchema = new Schema<IContact>(
         /^[\+]?[1-9][\d]{0,15}$/,
         'Please provide a valid phone number'
       ]
+    },
+    company: {
+      type: String,
+      trim: true,
+      maxlength: [200, 'Company name cannot exceed 200 characters']
+    },
+    projectType: {
+      type: String,
+      trim: true,
+      enum: [
+        'Residential Design',
+        'Commercial Architecture', 
+        'Interior Design',
+        'Landscape Architecture',
+        'Planning & Consulting',
+        'Renovation/Addition',
+        'Other'
+      ]
+    },
+    budget: {
+      type: String,
+      trim: true,
+      enum: [
+        'Under $100k',
+        '$100k - $250k',
+        '$250k - $500k', 
+        '$500k - $1M',
+        '$1M - $2M',
+        'Over $2M',
+        'To be determined'
+      ]
+    },
+    timeline: {
+      type: String,
+      trim: true,
+      enum: [
+        'ASAP',
+        '1-3 months',
+        '3-6 months',
+        '6-12 months', 
+        '1+ years',
+        'Flexible'
+      ]
+    },
+    location: {
+      type: String,
+      trim: true,
+      maxlength: [200, 'Location cannot exceed 200 characters']
     },
     subject: {
       type: String,
