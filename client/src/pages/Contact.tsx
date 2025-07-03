@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { apiService } from '../services/api';
-import { ContactFormData } from '../types';
+import { ContactFormData, FormStatus } from '../types';
 import { PROJECT_TYPES, BUDGET_RANGES, TIMELINES } from '../constants';
 
 const Contact = () => {
@@ -16,7 +16,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

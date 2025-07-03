@@ -128,6 +128,9 @@ export type Timeline =
   | '1+ years'
   | 'Flexible';
 
+// Form submission status type for UI feedback
+export type FormStatus = 'idle' | 'success' | 'error';
+
 export interface ProjectFormData {
   title: string;
   description: string;
