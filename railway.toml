@@ -1,0 +1,34 @@
+# Railway Deployment Configuration
+version: 1
+
+services:
+  frontend:
+    build:
+      dockerfile: docker/Dockerfile.client
+      context: client/
+    environment:
+      VITE_API_URL: https://${{RAILWAY_PUBLIC_DOMAIN}}
+    domains:
+      - ${{RAILWAY_PUBLIC_DOMAIN}}
+
+  backend:
+    build:
+      dockerfile: docker/Dockerfile.server
+      context: server/
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGODB_URI: ${{DATABASE_URL}}
+      JWT_SECRET: ${{JWT_SECRET}}
+      CORS_ORIGIN: https://${{RAILWAY_PUBLIC_DOMAIN}}
+    domains:
+      - api-${{RAILWAY_PUBLIC_DOMAIN}}
+
+  database:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${{MONGO_USER}}
+      MONGO_INITDB_ROOT_PASSWORD: ${{MONGO_PASSWORD}}
+      MONGO_INITDB_DATABASE: sabaarchitect
+    volumes:
+      - /data/db

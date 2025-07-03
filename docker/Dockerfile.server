@@ -15,11 +15,25 @@ COPY . .
 # Build TypeScript
 RUN npm run build
 
-# Create uploads directory
-RUN mkdir -p uploads
+# Create uploads directory with proper permissions
+RUN mkdir -p uploads && chmod 755 uploads
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodeuser -u 1001
+
+# Change ownership
+RUN chown -R nodeuser:nodejs /app
+
+# Switch to non-root user
+USER nodeuser
 
 # Expose port
 EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node healthcheck.js || exit 1
 
 # Start the application
 CMD ["npm", "start"]

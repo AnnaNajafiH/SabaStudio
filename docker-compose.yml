@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: sabaarchitect-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: sabaarchitect
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - sabaarchitect-network
+
+  # Backend Server
+  server:
+    build:
+      context: ./server
+      dockerfile: ../docker/Dockerfile.server
+    container_name: sabaarchitect-server
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/sabaarchitect?authSource=admin
+      JWT_SECRET: production-jwt-secret-change-this-in-production
+      JWT_EXPIRES_IN: 7d
+      CORS_ORIGIN: http://localhost:3000
+      # Email configuration (optional - add your credentials)
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: your-email@gmail.com
+      SMTP_PASS: your-app-password
+      FROM_EMAIL: noreply@sabaarchitect.com
+      ADMIN_EMAIL: admin@sabaarchitect.com
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+    volumes:
+      - server_uploads:/app/uploads
+    networks:
+      - sabaarchitect-network
+
+  # Frontend Client
+  client:
+    build:
+      context: ./client
+      dockerfile: ../docker/Dockerfile.client
+    container_name: sabaarchitect-client
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - server
+    networks:
+      - sabaarchitect-network
+
+# Volumes
+volumes:
+  mongodb_data:
+    driver: local
+  server_uploads:
+    driver: local
+
+# Networks
+networks:
+  sabaarchitect-network:
+    driver: bridge

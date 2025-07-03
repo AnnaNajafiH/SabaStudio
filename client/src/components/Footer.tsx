@@ -10,10 +10,14 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-accent-600 to-accent-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg font-serif">S</span>
-              </div>
-              <span className="text-xl font-serif font-semibold">S\Studio</span>
+            <div className="w-20 h-8 flex items-center justify-center"
+            style={{
+              backgroundImage: 'url("../../public/images/logo.jpg")',
+              backgroundSize: 'cover',
+              borderRadius: '0px',
+               }}>
+            </div>
+              {/* <span className="text-xl font-serif font-semibold">S\Studio</span> */}
             </Link>
             <p className="text-primary-300 mb-6 max-w-md">
               Creating exceptional architectural designs that blend innovation with functionality. 

@@ -159,7 +159,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Office Location</h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray- text-sm">
                       123 Architecture Ave<br />
                       Design District, City 12345<br />
                       United States
@@ -176,7 +176,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Phone</h3>
                     <p className="text-gray-600">
-                      <a href="tel:+1234567890" className="hover:text-primary-900 transition-colors">
+                      <a href="tel:+1234567890" className="hover:text-primary-900 transition-colors text-sm">
                         +1 (234) 567-8900
                       </a>
                     </p>
@@ -192,7 +192,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Email</h3>
                     <p className="text-gray-600">
-                      <a href="mailto:hello@sabaarchitect.com" className="hover:text-primary-900 transition-colors">
+                      <a href="mailto:hello@sabaarchitect.com" className="hover:text-primary-900 transition-colors text-sm">
                         hello@sabaarchitect.com
                       </a>
                     </p>
@@ -207,7 +207,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Office Hours</h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm">
                       Monday - Friday: 9:00 AM - 6:00 PM<br />
                       Saturday: 10:00 AM - 2:00 PM<br />
                       Sunday: Closed
