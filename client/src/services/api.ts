@@ -9,16 +9,31 @@ import {
   ProjectFormData 
 } from '../types';
 
+//helper class 
 class ApiService {
   private api: AxiosInstance;
 
   constructor() {
-    this.api = axios.create({
+    this.api = axios.create({    //Inside my apiService object, I’m creating a property called api and assigning to it this customized axios instance.”
       baseURL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:3003/api/v1',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json',   //The data I’m sending will be in JSON format."
       },
     });
+
+// all methods:
+// async healthCheck()
+// async getProjects()
+// async getProject()
+// async createProject()
+// async updateProject()
+// async deleteProject()submitContact
+// async submitContact()
+// async getContacts()
+// async login()
+// async getProfile()
+// async logout()
+// async uploadFiles()
 
     // Request interceptor to add auth token
     this.api.interceptors.request.use(

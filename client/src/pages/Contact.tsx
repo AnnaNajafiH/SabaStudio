@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { apiService } from '../services/api';
-import { ContactFormData, ProjectType, BudgetRange, Timeline } from '../types';
+import { ContactFormData } from '../types';
+import { PROJECT_TYPES, BUDGET_RANGES, TIMELINES } from '../constants';
 
 const Contact = () => {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -17,35 +18,6 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const projectTypes: ProjectType[] = [
-    'Residential Design',
-    'Commercial Architecture',
-    'Interior Design',
-    'Landscape Architecture',
-    'Planning & Consulting',
-    'Renovation/Addition',
-    'Other'
-  ];
-
-  const budgetRanges: BudgetRange[] = [
-    'Under $100k',
-    '$100k - $250k',
-    '$250k - $500k',
-    '$500k - $1M',
-    '$1M - $2M',
-    'Over $2M',
-    'To be determined'
-  ];
-
-  const timelines: Timeline[] = [
-    'ASAP',
-    '1-3 months',
-    '3-6 months',
-    '6-12 months',
-    '1+ years',
-    'Flexible'
-  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -360,7 +332,7 @@ const Contact = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       >
                         <option value="">Select project type</option>
-                        {projectTypes.map((type) => (
+                        {PROJECT_TYPES.map((type) => (
                           <option key={type} value={type}>{type}</option>
                         ))}
                       </select>
@@ -394,7 +366,7 @@ const Contact = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       >
                         <option value="">Select budget range</option>
-                        {budgetRanges.map((range) => (
+                        {BUDGET_RANGES.map((range) => (
                           <option key={range} value={range}>{range}</option>
                         ))}
                       </select>
@@ -411,7 +383,7 @@ const Contact = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       >
                         <option value="">Select timeline</option>
-                        {timelines.map((timeline) => (
+                        {TIMELINES.map((timeline) => (
                           <option key={timeline} value={timeline}>{timeline}</option>
                         ))}
                       </select>
