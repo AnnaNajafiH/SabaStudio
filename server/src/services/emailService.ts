@@ -338,7 +338,7 @@ If you did not submit this form, please contact us immediately.
       const mailOptions = {
         from: this.fromEmail,
         to: to,
-        subject: '🧪 SabaArchitect Email Service Test',
+        subject: '🧪 S\\Studio Email Service Test',
         html: `
           <h2>✅ Email Service Test Successful!</h2>
           <p>This is a test email from your SabaArchitect contact form system.</p>
