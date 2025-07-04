@@ -27,6 +27,20 @@ export type ProjectCategory =
   | 'landscape' 
   | 'renovation';
 
+// Constants for UI components
+export const PROJECT_CATEGORIES: ProjectCategory[] = [
+  'residential',
+  'commercial', 
+  'interior',
+  'landscape',
+  'renovation'
+];
+
+export const PROJECT_CATEGORIES_WITH_ALL: (string | ProjectCategory)[] = [
+  'All',
+  ...PROJECT_CATEGORIES
+];
+
 export type ProjectStatus = 
   | 'completed' 
   | 'in-progress' 

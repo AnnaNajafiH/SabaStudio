@@ -92,6 +92,8 @@ export const getProjects = async (
   }
 };
 
+
+
 // Get single project by ID or slug
 export const getProject = async (
   req: Request,

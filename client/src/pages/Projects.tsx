@@ -1,22 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Project, ProjectCategory } from '../types';
+import { Project, ProjectCategory, PROJECT_CATEGORIES_WITH_ALL } from '../types';
 import { useProjects } from '../hooks/useProjects';
 
 const Projects = () => {
   const { projects, loading, error } = useProjects();
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All'); //all  means no category filter
   const [searchTerm, setSearchTerm] = useState('');
-
-  const categories: (string | ProjectCategory)[] = [
-    'All',
-    'residential',
-    'commercial',
-    'interior',
-    'landscape',
-    'renovation'
-  ];
 
   useEffect(() => {
     let filtered = projects;
@@ -80,7 +71,7 @@ const Projects = () => {
 
             {/* Category Filters */}
             <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
+              {PROJECT_CATEGORIES_WITH_ALL.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}

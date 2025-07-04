@@ -95,12 +95,15 @@ const startServer = async (): Promise<void> => {
   }
 };
 
-// Handle graceful shutdown
+// Handle graceful shutdown:
+
+// this signal sent when the system or a container manager tells the process to terminate (e.g., docker stop or Railway shutting down the container).
 process.on('SIGTERM', () => {
   console.log('🛑 SIGTERM received, shutting down gracefully');
   process.exit(0);
 });
 
+// this Signal sent when you press Ctrl+C in the terminal (interrupt signal).
 process.on('SIGINT', () => {
   console.log('🛑 SIGINT received, shutting down gracefully');
   process.exit(0);
