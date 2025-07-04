@@ -11,12 +11,11 @@ const Projects = () => {
 
   const categories: (string | ProjectCategory)[] = [
     'All',
-    'Residential',
-    'Commercial',
-    'Industrial',
-    'Landscape',
-    'Interior',
-    'Urban Planning'
+    'residential',
+    'commercial',
+    'interior',
+    'landscape',
+    'renovation'
   ];
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const Projects = () => {
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+        project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -91,7 +90,7 @@ const Projects = () => {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {category}
+                  {category === 'All' ? category : category.charAt(0).toUpperCase() + category.slice(1)}
                 </button>
               ))}
             </div>
@@ -139,8 +138,8 @@ const Projects = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project) => (
                 <Link
-                  key={project.id}
-                  to={`/projects/${project.id}`}
+                  key={project._id}
+                  to={`/projects/${project.slug}`}
                   className="group block"
                 >
                   <div className="card overflow-hidden group-hover:shadow-xl transition-all duration-300">
@@ -148,7 +147,7 @@ const Projects = () => {
                     <div className="aspect-video bg-gray-200 mb-6 rounded-lg overflow-hidden relative">
                       {project.images && project.images.length > 0 ? (
                         <img
-                          src={project.thumbnail || project.images[0]}
+                          src={project.thumbnailImage || project.images[0]}
                           alt={project.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
@@ -168,7 +167,7 @@ const Projects = () => {
                       </div>
 
                       {/* Featured Badge */}
-                      {project.isFeatured && (
+                      {project.featured && (
                         <div className="absolute top-4 right-4">
                           <span className="px-3 py-1 bg-accent-600/90 text-white text-xs font-medium rounded-full backdrop-blur-sm">
                             Featured
@@ -207,9 +206,9 @@ const Projects = () => {
                         
                         {project.status && (
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            project.status === 'Completed' 
+                            project.status === 'completed' 
                               ? 'bg-green-100 text-green-800'
-                              : project.status === 'In Progress'
+                              : project.status === 'in-progress'
                               ? 'bg-blue-100 text-blue-800'
                               : 'bg-gray-100 text-gray-800'
                           }`}>

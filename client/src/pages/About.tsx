@@ -28,7 +28,7 @@ const About = () => {
               <div className="prose prose-lg">
                 <p className="text-gray-600 mb-6">
                   Founded on the principle that great architecture should enhance human experience, 
-                  SabaArchitect has been creating innovative and sustainable designs for over a decade. 
+                  S\Studio has been creating innovative and sustainable designs for over a decade. 
                   Our journey began with a simple belief: every space has the potential to inspire.
                 </p>
                 <p className="text-gray-600 mb-6">

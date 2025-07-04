@@ -1,40 +1,37 @@
 export interface Project {
-  id: string;
+  _id: string;
   title: string;
   description: string;
-  longDescription?: string;
+  fullDescription?: string;
   category: ProjectCategory;
   status: ProjectStatus;
   images: string[];
-  thumbnail?: string;
+  thumbnailImage: string;
   client?: string;
-  location?: string;
+  location: string;
   area?: number;
-  year?: number;
+  year: number;
   budget?: number;
-  tags?: string[];
-  features?: string[];
-  isPublished: boolean;
-  isFeatured: boolean;
-  viewCount?: number;
+  tags: string[];
+  featured: boolean;
+  published: boolean;
+  slug: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export type ProjectCategory = 
-  | 'Residential' 
-  | 'Commercial' 
-  | 'Industrial' 
-  | 'Landscape' 
-  | 'Interior' 
-  | 'Urban Planning';
+  | 'residential' 
+  | 'commercial' 
+  | 'interior' 
+  | 'landscape' 
+  | 'renovation';
 
 export type ProjectStatus = 
-  | 'Draft' 
-  | 'In Progress' 
-  | 'Under Review' 
-  | 'Completed' 
-  | 'Archived';
+  | 'completed' 
+  | 'in-progress' 
+  | 'planning' 
+  | 'on-hold';
 
 export interface Contact {
   id: string;
@@ -67,7 +64,7 @@ export interface User {
 }
 
 export interface ApiResponse<T = any> {
-  status: 'success' | 'fail' | 'error';
+  success: boolean;
   message?: string;
   data?: T;
   error?: string;

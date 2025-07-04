@@ -178,20 +178,20 @@ const ProjectDetail = () => {
                   <span className="px-3 py-1 bg-primary-100 text-primary-900 text-sm font-medium rounded-full">
                     {project.category}
                   </span>
-                  {project.isFeatured && (
+                  {project.featured && (
                     <span className="px-3 py-1 bg-accent-100 text-accent-700 text-sm font-medium rounded-full">
                       Featured
                     </span>
                   )}
                   {project.status && (
                     <span className={`px-3 py-1 text-sm font-medium rounded-full ${
-                      project.status === 'Completed' 
+                      project.status === 'completed' 
                         ? 'bg-green-100 text-green-800'
-                        : project.status === 'In Progress'
+                        : project.status === 'in-progress'
                         ? 'bg-blue-100 text-blue-800'
                         : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {project.status}
+                      {project.status.charAt(0).toUpperCase() + project.status.slice(1).replace('-', ' ')}
                     </span>
                   )}
                 </div>
@@ -253,20 +253,20 @@ const ProjectDetail = () => {
       </section>
 
       {/* Long Description */}
-      {project.longDescription && (
+      {project.fullDescription && (
         <section className="py-20 bg-gray-50">
           <div className="container-max section-padding">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-serif font-bold text-primary-900 mb-8">About This Project</h2>
               <div className="prose prose-lg max-w-none">
-                <p className="text-gray-600 leading-relaxed">{project.longDescription}</p>
+                <p className="text-gray-600 leading-relaxed">{project.fullDescription}</p>
               </div>
             </div>
           </div>
         </section>
       )}
 
-      {/* Features */}
+      {/* Features
       {project.features && project.features.length > 0 && (
         <section className="py-20">
           <div className="container-max section-padding">
@@ -287,7 +287,7 @@ const ProjectDetail = () => {
             </div>
           </div>
         </section>
-      )}
+      )} */}
 
       {/* Call to Action */}
       <section className="py-20 bg-primary-900 text-white">
