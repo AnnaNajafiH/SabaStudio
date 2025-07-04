@@ -5,10 +5,20 @@ import { Project, User } from '../models';
 // Load environment variables
 dotenv.config();
 
+// Helper function to generate slug from title
+const generateSlug = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .trim();
+};
+
 const seedData = async () => {
   try {
     // Connect to database
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/sabaarchitect';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/sstudio';
     await mongoose.connect(mongoUri);
     console.log('✅ Connected to MongoDB');
 
@@ -122,17 +132,23 @@ const seedData = async () => {
       }
     ];
 
-    await Project.insertMany(sampleProjects);
-    console.log(`✅ Created ${sampleProjects.length} sample projects`);
+    // Generate slugs for each project before inserting
+    const projectsWithSlugs = sampleProjects.map(project => ({
+      ...project,
+      slug: generateSlug(project.title)
+    }));
+
+    await Project.insertMany(projectsWithSlugs);
+    console.log(`✅ Created ${projectsWithSlugs.length} sample projects`);
 
     // Create admin user
     console.log('👤 Creating admin user...');
     const adminUser = new User({
       username: 'admin',
-      email: 'admin@sabaarchitect.com',
+      email: 'admin@sstudio.com',
       password: 'admin123456', // Will be hashed automatically
-      firstName: 'Saba',
-      lastName: 'Architect',
+      firstName: 'Admin',
+      lastName: 'Studio',
       role: 'admin',
       isActive: true
     });
@@ -145,7 +161,7 @@ const seedData = async () => {
     console.log(`   - Projects: ${sampleProjects.length}`);
     console.log(`   - Users: 1 (admin)`);
     console.log('\n🔐 Admin Login:');
-    console.log('   Email: admin@sabaarchitect.com');
+    console.log('   Email: admin@sstudio.com');
     console.log('   Password: admin123456');
     
   } catch (error) {

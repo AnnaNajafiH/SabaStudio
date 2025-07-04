@@ -1,5 +1,5 @@
 export interface ApiResponse<T = any> {
-  status: 'success' | 'fail' | 'error';
+  success: boolean;
   message?: string;
   data?: T;
   error?: string;
@@ -11,6 +11,8 @@ export interface PaginatedResponse<T> {
   page: number;
   limit: number;
   totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
 }
 
 export interface ProjectData {

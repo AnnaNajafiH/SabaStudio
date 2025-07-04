@@ -4,12 +4,12 @@ import { ApiResponse } from '../types';
  * Create a standardized API response
  */
 export const createResponse = <T>(
-  status: 'success' | 'fail' | 'error',
+  success: boolean,
   message?: string,
   data?: T,
   error?: string
 ): ApiResponse<T> => {
-  const response: ApiResponse<T> = { status };
+  const response: ApiResponse<T> = { success };
   if (message !== undefined) response.message = message;
   if (data !== undefined) response.data = data;
   if (error !== undefined) response.error = error;
@@ -20,21 +20,21 @@ export const createResponse = <T>(
  * Create a success response
  */
 export const success = <T>(data?: T, message?: string): ApiResponse<T> => {
-  return createResponse('success', message, data);
+  return createResponse(true, message, data);
 };
 
 /**
  * Create a fail response (client error)
  */
 export const fail = (message: string, data?: any): ApiResponse => {
-  return createResponse('fail', message, data);
+  return createResponse(false, message, data);
 };
 
 /**
  * Create an error response (server error)
  */
 export const error = (message: string, error?: string): ApiResponse => {
-  return createResponse('error', message, undefined, error);
+  return createResponse(false, message, undefined, error);
 };
 
 /**
