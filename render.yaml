@@ -12,9 +12,7 @@ services:
       - key: PORT
         value: 10000
       - key: MONGODB_URI
-        fromDatabase:
-          name: sstudio-db
-          property: connectionString
+        sync: false
       - key: DB_NAME
         value: SabaStudio
       - key: CORS_ORIGIN
@@ -25,8 +23,3 @@ services:
         generateValue: true
       - key: BCRYPT_ROUNDS
         value: 12
-
-databases:
-  - name: sstudio-db
-    databaseName: SabaStudio
-    user: sstudio-user
