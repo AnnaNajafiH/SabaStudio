@@ -57,7 +57,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
-    message: 'SabaArchitect API is running',
+    message: 'S-Studio API is running',
     timestamp: new Date().toISOString(),
     environment: NODE_ENV
   });

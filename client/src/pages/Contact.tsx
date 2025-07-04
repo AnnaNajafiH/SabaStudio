@@ -1,17 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { apiService } from '../services/api';
-
-interface ContactFormData {
-  name: string;
-  email: string;
-  phone: string;
-  company: string;
-  projectType: string;
-  budget: string;
-  timeline: string;
-  location: string;
-  message: string;
-}
+import { ContactFormData, FormStatus } from '../types';
+import { PROJECT_TYPES, BUDGET_RANGES, TIMELINES } from '../constants';
 
 const Contact = () => {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -26,37 +16,8 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const projectTypes = [
-    'Residential Design',
-    'Commercial Architecture',
-    'Interior Design',
-    'Landscape Architecture',
-    'Planning & Consulting',
-    'Renovation/Addition',
-    'Other'
-  ];
-
-  const budgetRanges = [
-    'Under $100k',
-    '$100k - $250k',
-    '$250k - $500k',
-    '$500k - $1M',
-    '$1M - $2M',
-    'Over $2M',
-    'To be determined'
-  ];
-
-  const timelines = [
-    'ASAP',
-    '1-3 months',
-    '3-6 months',
-    '6-12 months',
-    '1+ years',
-    'Flexible'
-  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -77,9 +38,8 @@ const Contact = () => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        company: formData.company,
-        message: `${formData.message}\n\nProject Details:\n- Type: ${formData.projectType}\n- Budget: ${formData.budget}\n- Timeline: ${formData.timeline}\n- Location: ${formData.location}`,
-        subject: `Project Inquiry: ${formData.projectType}`
+        message: `${formData.message}\n\nProject Details:\n- Type: ${formData.projectType}\n- Budget: ${formData.budget}\n- Timeline: ${formData.timeline}\n- Location: ${formData.location}\n- Company: ${formData.company}`,
+        subject: `Project Inquiry: ${formData.projectType || 'General Inquiry'}`
       });
 
       setSubmitStatus('success');
@@ -94,9 +54,23 @@ const Contact = () => {
         location: '',
         message: ''
       });
-    } catch (error) {
+    } catch (error: any) {
       setSubmitStatus('error');
-      setErrorMessage('Failed to send message. Please try again or contact us directly.');
+      
+      // Handle different types of errors
+      if (error.response?.status === 429) {
+        setErrorMessage('Too many submissions. Please wait a few minutes before trying again.');
+      } else if (error.response?.data?.data?.errors) {
+        // Handle validation errors
+        const validationErrors = error.response.data.data.errors;
+        const errorMessages = validationErrors.map((err: any) => err.msg).join(', ');
+        setErrorMessage(`Please fix the following: ${errorMessages}`);
+      } else if (error.response?.data?.message) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage('Failed to send message. Please try again or contact us directly.');
+      }
+      
       console.error('Contact form error:', error);
     } finally {
       setIsSubmitting(false);
@@ -106,7 +80,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-900 to-accent-600 text-white">
+      <section className="py-20 bg-gradient-to-br from-primary-900 to-neutral-200 text-white">
         <div className="container-max section-padding">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
@@ -146,7 +120,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Office Location</h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray- text-sm">
                       123 Architecture Ave<br />
                       Design District, City 12345<br />
                       United States
@@ -163,7 +137,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Phone</h3>
                     <p className="text-gray-600">
-                      <a href="tel:+1234567890" className="hover:text-primary-900 transition-colors">
+                      <a href="tel:+1234567890" className="hover:text-primary-900 transition-colors text-sm">
                         +1 (234) 567-8900
                       </a>
                     </p>
@@ -179,7 +153,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Email</h3>
                     <p className="text-gray-600">
-                      <a href="mailto:hello@sabaarchitect.com" className="hover:text-primary-900 transition-colors">
+                      <a href="mailto:hello@sabaarchitect.com" className="hover:text-primary-900 transition-colors text-sm">
                         hello@sabaarchitect.com
                       </a>
                     </p>
@@ -194,7 +168,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Office Hours</h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm">
                       Monday - Friday: 9:00 AM - 6:00 PM<br />
                       Saturday: 10:00 AM - 2:00 PM<br />
                       Sunday: Closed
@@ -231,29 +205,48 @@ const Contact = () => {
 
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <div className="card">
+              <div className="card p-5">
                 <h2 className="text-2xl font-semibold text-primary-900 mb-8">
                   Project Inquiry Form
                 </h2>
 
                 {submitStatus === 'success' && (
-                  <div className="mb-8 p-4 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="flex items-center">
-                      <svg className="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="mb-8 p-6 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-start">
+                      <svg className="w-6 h-6 text-green-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <p className="text-green-800">Thank you for your message! We'll get back to you within 24 hours.</p>
+                      <div>
+                        <h3 className="text-green-800 font-semibold mb-2">✅ Message Sent Successfully!</h3>
+                        <p className="text-green-700 text-sm">
+                          Thank you for contacting S\Studio! We've received your inquiry and will respond within 24-48 hours during business days. 
+                          You should also receive a confirmation email shortly.
+                        </p>
+                        <p className="text-green-600 text-xs mt-2">
+                          Need immediate assistance? Call us at +49 123 456 7890
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}
 
                 {submitStatus === 'error' && (
-                  <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <div className="flex items-center">
-                      <svg className="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="mb-8 p-6 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-start">
+                      <svg className="w-6 h-6 text-red-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <p className="text-red-800">{errorMessage}</p>
+                      <div>
+                        <h3 className="text-red-800 font-semibold mb-2"> Message Failed to Send</h3>
+                        <p className="text-red-700 text-sm mb-2">{errorMessage}</p>
+                        <p className="text-red-600 text-xs">
+                          Alternatively, you can email us directly at{' '}
+                          <a href="mailto:hello@sabaarchitect.com" className="underline hover:text-red-800">
+                            hello@sabaarchitect.com
+                          </a>{' '}
+                          or call +49 123 456 7890
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -339,7 +332,7 @@ const Contact = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       >
                         <option value="">Select project type</option>
-                        {projectTypes.map((type) => (
+                        {PROJECT_TYPES.map((type) => (
                           <option key={type} value={type}>{type}</option>
                         ))}
                       </select>
@@ -373,7 +366,7 @@ const Contact = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       >
                         <option value="">Select budget range</option>
-                        {budgetRanges.map((range) => (
+                        {BUDGET_RANGES.map((range) => (
                           <option key={range} value={range}>{range}</option>
                         ))}
                       </select>
@@ -390,7 +383,7 @@ const Contact = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       >
                         <option value="">Select timeline</option>
-                        {timelines.map((timeline) => (
+                        {TIMELINES.map((timeline) => (
                           <option key={timeline} value={timeline}>{timeline}</option>
                         ))}
                       </select>

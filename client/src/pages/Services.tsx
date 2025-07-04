@@ -148,7 +148,7 @@ const Services = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-900 to-accent-600 text-white">
+      <section className="py-20 bg-gradient-to-br from-primary-900 to-neutral-200 text-white">
         <div className="container-max section-padding">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
@@ -177,7 +177,7 @@ const Services = () => {
             {services.map((service) => (
               <div key={service.id} className="card group hover:shadow-xl transition-shadow">
                 <div className="flex items-start space-x-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-900 to-accent-600 rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary-900 to-neutral-200 rounded-lg flex items-center justify-center text-white flex-shrink-0">
                     {service.icon}
                   </div>
                   <div className="flex-1">
