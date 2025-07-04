@@ -175,7 +175,7 @@ const Services = () => {
 
           <div className="grid lg:grid-cols-2 gap-8">
             {services.map((service) => (
-              <div key={service.id} className="card group hover:shadow-xl transition-shadow">
+              <div key={service.id} className="card group hover:shadow-xl transition-shadow p-4">
                 <div className="flex items-start space-x-6">
                   <div className="w-16 h-16 bg-gradient-to-br from-primary-900 to-neutral-200 rounded-lg flex items-center justify-center text-white flex-shrink-0">
                     {service.icon}
@@ -254,7 +254,7 @@ const Services = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-serif font-bold text-primary-900 mb-8">
-                Why Choose SabaArchitect?
+                Why Choose S\Studio?
               </h2>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">

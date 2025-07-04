@@ -1,4 +1,5 @@
-// This is a test file to verify imports work correctly
+// This test-imports.ts file is a diagnostic/debugging tool used to verify that all the TypeScript imports and module dependencies are working correctly in your backend project.
+
 import { connectDatabase } from './config/database';
 import { errorHandler } from './middleware/errorHandler';
 import { notFoundHandler } from './middleware/notFoundHandler';

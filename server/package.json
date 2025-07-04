@@ -1,5 +1,5 @@
 {
-  "name": "sabaarchitect-server",
+  "name": "sstudio-server",
   "version": "1.0.0",
   "description": "Backend API for SabaArchitect - Architecture Web Application",
   "main": "dist/server.js",
@@ -12,6 +12,7 @@
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "seed": "npx ts-node src/utils/seedDatabase.ts",
+    "seed:projects": "npx ts-node src/utils/seedProjects.ts",
     "seed:build": "npm run build && node dist/utils/seedDatabase.js"
   },
   "keywords": [

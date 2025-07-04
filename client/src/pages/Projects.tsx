@@ -1,23 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Project, ProjectCategory } from '../types';
+import { Project, ProjectCategory, PROJECT_CATEGORIES_WITH_ALL } from '../types';
 import { useProjects } from '../hooks/useProjects';
 
 const Projects = () => {
   const { projects, loading, error } = useProjects();
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All'); //all  means no category filter
   const [searchTerm, setSearchTerm] = useState('');
-
-  const categories: (string | ProjectCategory)[] = [
-    'All',
-    'Residential',
-    'Commercial',
-    'Industrial',
-    'Landscape',
-    'Interior',
-    'Urban Planning'
-  ];
 
   useEffect(() => {
     let filtered = projects;
@@ -33,7 +23,7 @@ const Projects = () => {
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+        project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -81,7 +71,7 @@ const Projects = () => {
 
             {/* Category Filters */}
             <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
+              {PROJECT_CATEGORIES_WITH_ALL.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
@@ -91,7 +81,7 @@ const Projects = () => {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {category}
+                  {category === 'All' ? category : category.charAt(0).toUpperCase() + category.slice(1)}
                 </button>
               ))}
             </div>
@@ -139,8 +129,8 @@ const Projects = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project) => (
                 <Link
-                  key={project.id}
-                  to={`/projects/${project.id}`}
+                  key={project._id}
+                  to={`/projects/${project.slug}`}
                   className="group block"
                 >
                   <div className="card overflow-hidden group-hover:shadow-xl transition-all duration-300">
@@ -148,7 +138,7 @@ const Projects = () => {
                     <div className="aspect-video bg-gray-200 mb-6 rounded-lg overflow-hidden relative">
                       {project.images && project.images.length > 0 ? (
                         <img
-                          src={project.thumbnail || project.images[0]}
+                          src={project.thumbnailImage || project.images[0]}
                           alt={project.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
@@ -168,7 +158,7 @@ const Projects = () => {
                       </div>
 
                       {/* Featured Badge */}
-                      {project.isFeatured && (
+                      {project.featured && (
                         <div className="absolute top-4 right-4">
                           <span className="px-3 py-1 bg-accent-600/90 text-white text-xs font-medium rounded-full backdrop-blur-sm">
                             Featured
@@ -179,7 +169,7 @@ const Projects = () => {
 
                     {/* Project Info */}
                     <div className="space-y-4">
-                      <div>
+                      <div className="px-4">
                         <h3 className="text-xl font-semibold text-primary-900 mb-2 group-hover:text-accent-600 transition-colors">
                           {project.title}
                         </h3>
@@ -189,7 +179,7 @@ const Projects = () => {
                       </div>
 
                       {/* Project Details */}
-                      <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div className="flex items-center justify-between text-sm text-gray-500 px-4">
                         <div className="flex items-center space-x-4">
                           {project.location && (
                             <span className="flex items-center">
@@ -207,9 +197,9 @@ const Projects = () => {
                         
                         {project.status && (
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            project.status === 'Completed' 
+                            project.status === 'completed' 
                               ? 'bg-green-100 text-green-800'
-                              : project.status === 'In Progress'
+                              : project.status === 'in-progress'
                               ? 'bg-blue-100 text-blue-800'
                               : 'bg-gray-100 text-gray-800'
                           }`}>
@@ -220,7 +210,7 @@ const Projects = () => {
 
                       {/* Tags */}
                       {project.tags && project.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 px-4 pb-2">
                           {project.tags.slice(0, 3).map((tag, index) => (
                             <span
                               key={index}

@@ -1,3 +1,9 @@
+// Use test-server.ts when:
+// ❌ Database is not available
+// ❌ You want quick API testing
+// ❌ Testing frontend without full backend
+// ❌ Developing contact form functionality
+
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { body, validationResult } from 'express-validator';

@@ -23,7 +23,7 @@ export const useProjects = (params?: {
       setLoading(true);
       setError(null);
       const response: PaginatedResponse<Project> = await apiService.getProjects(params);
-      setProjects(response.data);
+      setProjects(response.data);  // Get the projects array from response.data
       setPagination({
         total: response.total,
         page: response.page,

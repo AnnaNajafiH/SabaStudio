@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const connectDatabase = async (): Promise<void> => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/sabaarchitect';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/sstudio';
     
     const options = {
       maxPoolSize: 10,

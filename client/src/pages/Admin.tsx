@@ -16,16 +16,15 @@ const Admin = () => {
   // Sample analytics data
   const analytics = {
     totalProjects: projects.length,
-    completedProjects: projects.filter(p => p.status === 'Completed').length,
-    inProgressProjects: projects.filter(p => p.status === 'In Progress').length,
-    featuredProjects: projects.filter(p => p.isFeatured).length,
+    completedProjects: projects.filter(p => p.status === 'completed').length,
+    inProgressProjects: projects.filter(p => p.status === 'in-progress').length,
+    featuredProjects: projects.filter(p => p.featured).length,
     projectsByCategory: {
-      'Residential': projects.filter(p => p.category === 'Residential').length,
-      'Commercial': projects.filter(p => p.category === 'Commercial').length,
-      'Industrial': projects.filter(p => p.category === 'Industrial').length,
-      'Landscape': projects.filter(p => p.category === 'Landscape').length,
-      'Interior': projects.filter(p => p.category === 'Interior').length,
-      'Urban Planning': projects.filter(p => p.category === 'Urban Planning').length,
+      'Residential': projects.filter(p => p.category === 'residential').length,
+      'Commercial': projects.filter(p => p.category === 'commercial').length,
+      'Interior': projects.filter(p => p.category === 'interior').length,
+      'Landscape': projects.filter(p => p.category === 'landscape').length,
+      'Renovation': projects.filter(p => p.category === 'renovation').length,
     }
   };
 
@@ -97,7 +96,7 @@ const Admin = () => {
                     value={loginData.email}
                     onChange={(e) => setLoginData(prev => ({ ...prev, email: e.target.value }))}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                    placeholder="admin@sabaarchitect.com"
+                    placeholder="admin@sstudio.com"
                   />
                 </div>
               </div>
@@ -168,7 +167,7 @@ const Admin = () => {
                   <span className="text-white font-bold text-sm font-serif">S</span>
                 </div>
                 <span className="text-lg font-serif font-semibold text-primary-900">
-                  SabaArchitect
+                  S\Studio
                 </span>
               </Link>
               <span className="text-gray-400">|</span>
@@ -251,14 +250,14 @@ const Admin = () => {
             </div>
             <div className="space-y-4">
               {projects.slice(0, 3).map((project) => (
-                <div key={project.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div key={project._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
                     <h4 className="font-medium text-gray-900">{project.title}</h4>
                     <p className="text-sm text-gray-600">{project.category} • {project.status}</p>
                   </div>
                   <div className="flex space-x-2">
                     <Link
-                      to={`/projects/${project.id}`}
+                      to={`/projects/${project._id}`}
                       className="text-blue-600 hover:text-blue-800"
                       title="View Project"
                     >

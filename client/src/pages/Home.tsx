@@ -222,13 +222,19 @@ const Home = () => {
             <div className="grid lg:grid-cols-3 gap-8">
               {featuredProjects.map((project, index) => (
                 <Link
-                  key={project.id}
-                  to={`/projects/${project.id}`}
+                  key={project._id}
+                  to={`/projects/${project.slug}`}
                   className="group block"
                 >
                   <div className="relative overflow-hidden bg-white rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 border border-gray-100">
                     <div className="relative aspect-[4/3] overflow-hidden">
-                      {project.images && project.images.length > 0 ? (
+                      {project.thumbnailImage ? (
+                        <img
+                          src={project.thumbnailImage}
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                      ) : project.images && project.images.length > 0 ? (
                         <img
                           src={project.images[0]}
                           alt={project.title}
@@ -354,7 +360,7 @@ const Home = () => {
                 </div>
               </div>
               <blockquote className="text-gray-700 text-lg leading-relaxed mb-6">
-                "SabaArchitect transformed our vision into a stunning reality. Their attention to detail and innovative approach exceeded all our expectations."
+                "                "S\Studio transformed our vision into a stunning reality. Their attention to detail and innovative approach exceeded all our expectations.""
               </blockquote>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
@@ -379,7 +385,7 @@ const Home = () => {
                 </div>
               </div>
               <blockquote className="text-gray-700 text-lg leading-relaxed mb-6">
-                "Professional, creative, and reliable. SabaArchitect delivered our commercial project on time and within budget while maintaining exceptional quality."
+                "                "Professional, creative, and reliable. S\Studio delivered our commercial project on time and within budget while maintaining exceptional quality.""
               </blockquote>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-br from-accent-400 to-primary-400 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">

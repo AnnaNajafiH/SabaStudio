@@ -29,10 +29,11 @@ export interface IProject extends Document {
 
 // Interface for static methods
 export interface IProjectModel extends Model<IProject> {
-  findFeatured(): Promise<IProject[]>;
-  findByCategory(category: string): Promise<IProject[]>;
-  findByStatus(status: string): Promise<IProject[]>;
-  findByYear(year: number): Promise<IProject[]>;
+  findPublished(): mongoose.Query<IProject[], IProject>;
+  findFeatured(): mongoose.Query<IProject[], IProject>;
+  findByCategory(category: string): mongoose.Query<IProject[], IProject>;
+  findByStatus(status: string): mongoose.Query<IProject[], IProject>;
+  findByYear(year: number): mongoose.Query<IProject[], IProject>;
 }
 
 // Mongoose schema definition
@@ -76,19 +77,11 @@ const projectSchema = new Schema<IProject>(
     },
     images: [{
       type: String,
-      required: true,
-      match: [
-        /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i,
-        'Please provide valid image URLs'
-      ]
+      required: true
     }],
     thumbnailImage: {
       type: String,
-      required: [true, 'Thumbnail image is required'],
-      match: [
-        /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i,
-        'Please provide a valid thumbnail image URL'
-      ]
+      required: [true, 'Thumbnail image is required']
     },
     location: {
       type: String,
@@ -152,7 +145,6 @@ projectSchema.index({ status: 1 });
 projectSchema.index({ featured: 1 });
 projectSchema.index({ published: 1 });
 projectSchema.index({ year: -1 });
-projectSchema.index({ slug: 1 }, { unique: true });
 projectSchema.index({ tags: 1 });
 
 // Virtual for formatted year
