@@ -169,7 +169,7 @@ const Projects = () => {
 
                     {/* Project Info */}
                     <div className="space-y-4">
-                      <div>
+                      <div className="px-4">
                         <h3 className="text-xl font-semibold text-primary-900 mb-2 group-hover:text-accent-600 transition-colors">
                           {project.title}
                         </h3>
@@ -179,7 +179,7 @@ const Projects = () => {
                       </div>
 
                       {/* Project Details */}
-                      <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div className="flex items-center justify-between text-sm text-gray-500 px-4">
                         <div className="flex items-center space-x-4">
                           {project.location && (
                             <span className="flex items-center">
@@ -210,7 +210,7 @@ const Projects = () => {
 
                       {/* Tags */}
                       {project.tags && project.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 px-4 pb-2">
                           {project.tags.slice(0, 3).map((tag, index) => (
                             <span
                               key={index}

@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: sstudio-api
+    env: node
+    plan: free
+    buildCommand: cd server && npm ci && npm run build
+    startCommand: cd server && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: sstudio-db
+          property: connectionString
+      - key: DB_NAME
+        value: SabaStudio
+      - key: CORS_ORIGIN
+        value: https://sstudio-client.onrender.com
+      - key: EMAIL_ENABLED
+        value: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: BCRYPT_ROUNDS
+        value: 12
+
+databases:
+  - name: sstudio-db
+    databaseName: SabaStudio
+    user: sstudio-user
