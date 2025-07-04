@@ -19,8 +19,8 @@ class EmailService {
 
   constructor() {
     this.emailEnabled = process.env.EMAIL_ENABLED === 'true';
-    this.fromEmail = process.env.FROM_EMAIL || 'noreply@sabaarchitect.com';
-    this.adminEmail = process.env.ADMIN_EMAIL || 'admin@sabaarchitect.com';
+    this.fromEmail = process.env.FROM_EMAIL || 'noreply@sstudio.com';
+    this.adminEmail = process.env.ADMIN_EMAIL || 'admin@sstudio.com';
 
     console.log('🔍 Email Service Debug:');
     console.log('  EMAIL_ENABLED:', process.env.EMAIL_ENABLED);
@@ -112,7 +112,7 @@ class EmailService {
       const mailOptions = {
         from: this.fromEmail,
         to: contact.email,
-        subject: `Thank you for contacting SabaArchitect - We received your message`,
+        subject: `Thank you for contacting S\\Studio - We received your message`,
         html: this.generateCustomerEmailTemplate(contact),
         text: this.generateCustomerEmailText(contact),
       };
@@ -148,7 +148,7 @@ class EmailService {
         <div class="container">
           <div class="header">
             <h1>🎯 New Contact Form Submission</h1>
-            <p>SabaArchitect - Admin Notification</p>
+            <p>S\\Studio - Admin Notification</p>
           </div>
           
           <div class="content">
@@ -196,7 +196,7 @@ class EmailService {
           </div>
           
           <div class="footer">
-            <p>This is an automated notification from your SabaArchitect contact form.</p>
+            <p>This is an automated notification from your S\\Studio contact form.</p>
             <p>Status: ${contact.status} | IP: ${contact.ipAddress || 'Unknown'}</p>
           </div>
         </div>
@@ -208,7 +208,7 @@ class EmailService {
   // Generate plain text email for admin notification
   private generateAdminEmailText(contact: IContact): string {
     return `
-🎯 NEW CONTACT FORM SUBMISSION - SabaArchitect
+🎯 NEW CONTACT FORM SUBMISSION - S\\Studio
 
 Subject: ${contact.subject}
 Name: ${contact.name}
@@ -224,7 +224,7 @@ Reply to customer: ${contact.email}
 Status: ${contact.status}
 IP Address: ${contact.ipAddress || 'Unknown'}
 
-This is an automated notification from your SabaArchitect contact form.
+This is an automated notification from your S\\Studio contact form.
     `;
   }
 
@@ -248,7 +248,7 @@ This is an automated notification from your SabaArchitect contact form.
         <div class="container">
           <div class="header">
             <h1>✅ Thank You for Contacting Us!</h1>
-            <p>SabaArchitect - Message Received</p>
+            <p>S\\Studio - Message Received</p>
           </div>
           
           <div class="content">
@@ -270,20 +270,20 @@ This is an automated notification from your SabaArchitect contact form.
             <div class="contact-info">
               <h3>📞 Need immediate assistance?</h3>
               <p><strong>Phone:</strong> +49 123 456 7890</p>
-              <p><strong>Email:</strong> info@sabaarchitect.com</p>
+              <p><strong>Email:</strong> info@sstudio.com</p>
               <p><strong>Office Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM (CET)</p>
             </div>
             
-            <p>Thank you for considering SabaArchitect for your architectural needs. We look forward to discussing your project!</p>
+            <p>Thank you for considering S\\Studio for your architectural needs. We look forward to discussing your project!</p>
             
             <p>Best regards,<br>
-            <strong>The SabaArchitect Team</strong></p>
+            <strong>The S\\Studio Team</strong></p>
           </div>
           
           <div class="footer">
             <p>This is an automated confirmation email.</p>
             <p>If you did not submit this form, please contact us immediately.</p>
-            <p>© 2024 SabaArchitect. All rights reserved.</p>
+            <p>© 2024 S\\Studio. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -294,7 +294,7 @@ This is an automated notification from your SabaArchitect contact form.
   // Generate plain text email for customer confirmation
   private generateCustomerEmailText(contact: IContact): string {
     return `
-✅ THANK YOU FOR CONTACTING SABAARCHITECT!
+✅ THANK YOU FOR CONTACTING S\\STUDIO!
 
 Dear ${contact.name},
 
@@ -311,19 +311,19 @@ WHAT HAPPENS NEXT?
 
 NEED IMMEDIATE ASSISTANCE?
 Phone: +49 123 456 7890
-Email: info@sabaarchitect.com
+Email: info@sstudio.com
 Office Hours: Monday - Friday, 9:00 AM - 6:00 PM (CET)
 
-Thank you for considering SabaArchitect for your architectural needs. 
+Thank you for considering S\\Studio for your architectural needs. 
 We look forward to discussing your project!
 
 Best regards,
-The SabaArchitect Team
+The S\\Studio Team
 
 ---
 This is an automated confirmation email.
 If you did not submit this form, please contact us immediately.
-© 2024 SabaArchitect. All rights reserved.
+© 2024 S\\Studio. All rights reserved.
     `;
   }
 

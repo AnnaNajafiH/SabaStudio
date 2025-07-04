@@ -153,8 +153,8 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-primary-900 mb-1">Email</h3>
                     <p className="text-gray-600">
-                      <a href="mailto:hello@sabaarchitect.com" className="hover:text-primary-900 transition-colors text-sm">
-                        hello@sabaarchitect.com
+                      <a href="mailto:hello@sstudio.com" className="hover:text-primary-900 transition-colors text-sm">
+                        hello@sstudio.com
                       </a>
                     </p>
                   </div>
@@ -241,8 +241,8 @@ const Contact = () => {
                         <p className="text-red-700 text-sm mb-2">{errorMessage}</p>
                         <p className="text-red-600 text-xs">
                           Alternatively, you can email us directly at{' '}
-                          <a href="mailto:hello@sabaarchitect.com" className="underline hover:text-red-800">
-                            hello@sabaarchitect.com
+                          <a href="mailto:hello@sstudio.com" className="underline hover:text-red-800">
+                            hello@sstudio.com
                           </a>{' '}
                           or call +49 123 456 7890
                         </p>
