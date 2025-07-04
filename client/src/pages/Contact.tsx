@@ -219,7 +219,7 @@ const Contact = () => {
                       <div>
                         <h3 className="text-green-800 font-semibold mb-2">✅ Message Sent Successfully!</h3>
                         <p className="text-green-700 text-sm">
-                          Thank you for contacting SabaArchitect! We've received your inquiry and will respond within 24-48 hours during business days. 
+                          Thank you for contacting S\Studio! We've received your inquiry and will respond within 24-48 hours during business days. 
                           You should also receive a confirmation email shortly.
                         </p>
                         <p className="text-green-600 text-xs mt-2">
@@ -237,7 +237,7 @@ const Contact = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                       <div>
-                        <h3 className="text-red-800 font-semibold mb-2">❌ Message Failed to Send</h3>
+                        <h3 className="text-red-800 font-semibold mb-2"> Message Failed to Send</h3>
                         <p className="text-red-700 text-sm mb-2">{errorMessage}</p>
                         <p className="text-red-600 text-xs">
                           Alternatively, you can email us directly at{' '}

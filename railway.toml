@@ -7,7 +7,7 @@ services:
       dockerfile: docker/Dockerfile.client
       context: client/
     environment:
-      VITE_API_URL: https://${{RAILWAY_PUBLIC_DOMAIN}}
+      VITE_API_URL: https://api-${{RAILWAY_PUBLIC_DOMAIN}}
     domains:
       - ${{RAILWAY_PUBLIC_DOMAIN}}
 
@@ -18,17 +18,20 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3001
-      MONGODB_URI: ${{DATABASE_URL}}
+      # MongoDB Atlas connection string
+      MONGODB_URI: ${{MONGODB_ATLAS_URI}}
       JWT_SECRET: ${{JWT_SECRET}}
       CORS_ORIGIN: https://${{RAILWAY_PUBLIC_DOMAIN}}
+      SMTP_HOST: ${{SMTP_HOST}}
+      SMTP_PORT: ${{SMTP_PORT}}
+      SMTP_USER: ${{SMTP_USER}}
+      SMTP_PASS: ${{SMTP_PASS}}
+      FROM_EMAIL: ${{FROM_EMAIL}}
+      ADMIN_EMAIL: ${{ADMIN_EMAIL}}
+      EMAIL_ENABLED: true
     domains:
       - api-${{RAILWAY_PUBLIC_DOMAIN}}
 
-  database:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${{MONGO_USER}}
-      MONGO_INITDB_ROOT_PASSWORD: ${{MONGO_PASSWORD}}
-      MONGO_INITDB_DATABASE: sabaarchitect
-    volumes:
-      - /data/db
+# Note: Using MongoDB Atlas (cloud-managed database)
+# Set MONGODB_ATLAS_URI in Railway environment variables
+# Your URI: mongodb+srv://nahidnajafih:W1GzR8rdjkCKHiPf@cluster0.4xzpb3q.mongodb.net/SabaStudio?retryWrites=true&w=majority&appName=Cluster0
