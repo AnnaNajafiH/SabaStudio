@@ -30,19 +30,55 @@ app.use(helmet({
 
 // CORS configuration - support multiple origins for development
 const allowedOrigins = NODE_ENV === 'development' 
-  ? ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000']
+  ? [
+      'http://localhost:5173', 
+      'http://localhost:5174', 
+      'http://localhost:3001',
+      'http://localhost:3000',
+      'http://127.0.0.1:5173',
+      'http://127.0.0.1:5174',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001'
+    ]
   : [CORS_ORIGIN];
+
+console.log(`🔧 CORS Configuration:`, {
+  NODE_ENV,
+  CORS_ORIGIN,
+  allowedOrigins
+});
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, Postman, etc.)
-    if (!origin) return callback(null, true);
+    console.log(`🌐 CORS request from origin: ${origin}`);
     
-    if (allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (mobile apps, curl, Postman, etc.)
+    if (!origin) {
+      console.log(`✅ No origin - allowing request`);
       return callback(null, true);
     }
     
+    // In development mode, be more permissive
+    if (NODE_ENV === 'development') {
+      if (allowedOrigins.includes(origin)) {
+        console.log(`✅ Origin ${origin} allowed (in allowed list)`);
+        return callback(null, true);
+      }
+      // For development, allow localhost and 127.0.0.1 on any port
+      if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+        console.log(`✅ Origin ${origin} allowed (localhost/127.0.0.1)`);
+        return callback(null, true);
+      }
+    } else {
+      // Production mode - strict checking
+      if (allowedOrigins.includes(origin)) {
+        console.log(`✅ Origin ${origin} allowed (production)`);
+        return callback(null, true);
+      }
+    }
+    
     const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+    console.log(`❌ ${msg}`);
     return callback(new Error(msg), false);
   },
   credentials: true,
