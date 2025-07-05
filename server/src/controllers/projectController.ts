@@ -21,17 +21,6 @@ export const getProjects = async (
       sort = '-year'
     } = req.query;
 
-    // Debug: Check database connection and collection
-    console.log('🗄️ Database Debug:', {
-      dbName: Project.db.name,
-      collectionName: Project.collection.name,
-      connectionState: Project.db.readyState
-    });
-
-    // Check total count of all documents in collection (no filter)
-    const totalDocs = await Project.countDocuments({});
-    console.log('📈 Total documents in collection:', totalDocs);
-
     // Build filter object
     const filter: any = {};
 
@@ -71,14 +60,6 @@ export const getProjects = async (
     const limitNum = parseInt(limit as string);
     const skip = (pageNum - 1) * limitNum;
 
-    console.log('🔍 Project Query Debug:', {
-      filter,
-      pageNum,
-      limitNum,
-      skip,
-      sort
-    });
-
     // Execute query with pagination
     const [projects, total] = await Promise.all([
       Project.find(filter)
@@ -88,12 +69,6 @@ export const getProjects = async (
         .lean(),
       Project.countDocuments(filter)
     ]);
-
-    console.log('📊 Project Query Results:', {
-      projectsFound: projects.length,
-      totalInDB: total,
-      sampleProject: projects[0] ? { title: projects[0].title, id: projects[0]._id } : 'No projects'
-    });
 
     const totalPages = Math.ceil(total / limitNum);
 

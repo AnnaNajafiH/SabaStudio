@@ -4,8 +4,10 @@ import { Project, ProjectCategory, PROJECT_CATEGORIES_WITH_ALL } from '../types'
 import { useProjects } from '../hooks/useProjects';
 
 const Projects = () => {
-  const { projects, loading, error } = useProjects();
+  const [displayLimit, setDisplayLimit] = useState(12); // Start with 12 projects
+  const { projects, loading, error } = useProjects({ limit: 50 }); // Fetch all projects but control display
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All'); //all  means no category filter
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -28,7 +30,25 @@ const Projects = () => {
     }
 
     setFilteredProjects(filtered);
+    // Reset display limit when filters change
+    setDisplayLimit(12);
   }, [projects, selectedCategory, searchTerm]);
+
+  // Update displayed projects based on display limit
+  useEffect(() => {
+    setDisplayedProjects(filteredProjects.slice(0, displayLimit));
+  }, [filteredProjects, displayLimit]);
+
+  const loadMoreProjects = () => {
+    setDisplayLimit(prev => prev + 12); // Load 12 more projects
+  };
+
+  const showAllProjects = () => {
+    setDisplayLimit(filteredProjects.length); // Show all filtered projects
+  };
+  
+  // ✅ Check if more projects are available:
+  const hasMoreProjects = displayedProjects.length < filteredProjects.length;
 
   return (
     <div className="min-h-screen">
@@ -89,7 +109,12 @@ const Projects = () => {
 
           {/* Results count */}
           <div className="mt-4 text-sm text-gray-600">
-            {loading ? 'Loading...' : `${filteredProjects.length} projects found`}
+            {loading ? 'Loading...' : (
+              <>
+                Showing {displayedProjects.length} of {filteredProjects.length} projects
+                {hasMoreProjects && ` • ${filteredProjects.length - displayedProjects.length} more available`}
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -125,9 +150,10 @@ const Projects = () => {
             </div>
           )}
 
-          {!loading && !error && filteredProjects.length > 0 && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProjects.map((project) => (
+          {!loading && !error && displayedProjects.length > 0 && (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {displayedProjects.map((project) => (
                 <Link
                   key={project._id}
                   to={`/projects/${project.slug}`}
@@ -231,9 +257,35 @@ const Projects = () => {
                 </Link>
               ))}
             </div>
-          )}
-        </div>
-      </section>
+
+            {/* Load More Section */}
+            {hasMoreProjects && (
+              <div className="text-center mt-12">
+                <div className="space-y-4">
+                  <p className="text-gray-600 mb-6">
+                    {filteredProjects.length - displayedProjects.length} more projects available
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                      onClick={loadMoreProjects}
+                      className="btn-secondary"
+                    >
+                      Load 12 More Projects
+                    </button>
+                    <button
+                      onClick={showAllProjects}
+                      className="btn-primary"
+                    >
+                      Show All Projects ({filteredProjects.length})
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </section>
 
       {/* Call to Action */}
       <section className="py-20 bg-gray-50">
