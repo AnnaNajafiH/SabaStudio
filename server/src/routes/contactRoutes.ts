@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express, { Router, Request, Response } from 'express';
 import { ContactController } from '../controllers/contactController';
 import { contactValidation, testEmailValidation } from '../validation/contactValidation';
 import { contactRateLimit, adminRateLimit } from '../middleware/rateLimiting';

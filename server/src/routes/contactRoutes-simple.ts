@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import express, { Router, Request, Response } from 'express';
 import { Contact } from '../models';
 import { body, validationResult } from 'express-validator';
 import rateLimit from 'express-rate-limit';

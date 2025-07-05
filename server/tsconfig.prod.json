@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node", "express"]
+  },
+  "ts-node": {
+    "esm": false,
+    "files": true
+  }
+}

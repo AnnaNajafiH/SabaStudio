@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { Contact } from '../models';
 import { emailService } from '../services/emailService';

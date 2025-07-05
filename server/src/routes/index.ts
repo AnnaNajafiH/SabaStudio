@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express, { Router, Request, Response } from 'express';
 import projectRoutes from './projectRoutes';
 import authRoutes from './authRoutes';
 import contactRoutes from './contactRoutes';
@@ -11,7 +11,7 @@ router.use('/auth', authRoutes);
 router.use('/contact', contactRoutes);
 
 // Welcome route
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   res.json({
     message: 'Welcome to S\\Studio API',
     version: '1.0.0',

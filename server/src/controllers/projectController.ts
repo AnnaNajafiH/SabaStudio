@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import Project, { IProject } from '../models/Project';
 import { PaginatedResponse } from '../types';
 
