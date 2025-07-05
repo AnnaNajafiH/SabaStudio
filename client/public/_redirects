@@ -1,0 +1,15 @@
+# Handle client-side routing for React Router
+# Redirect all requests to index.html for SPA routing
+/*    /index.html   200
+
+# Optional: Handle API routes (if you ever serve both frontend and backend from same domain)
+/api/*  https://sabastudio-backend.onrender.com/api/:splat  200
+
+# Handle static assets properly
+/static/*  /static/:splat  200
+/assets/*  /assets/:splat  200
+
+
+<!-- The _redirects file tells the web server (like Render, Netlify, etc.) how to handle routing for your React app. Here's why it's needed: -->
+
+ <!-- Without this file: Direct links like https://yoursite.com/projects would show a 404 error -->

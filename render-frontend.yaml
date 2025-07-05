@@ -1,0 +1,26 @@
+services:
+  # Frontend Service
+  - type: web
+    name: sabastudio-frontend
+    env: static
+    staticPublishPath: ./client/dist
+    buildCommand: cd client && npm install && npm run build
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /static/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_API_URL
+        value: https://sabastudio-backend.onrender.com/api/v1
