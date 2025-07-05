@@ -14,28 +14,17 @@ class ApiService {
   private api: AxiosInstance;
 
   constructor() {
-    this.api = axios.create({    //Inside my apiService object, I’m creating a property called api and assigning to it this customized axios instance.”
-      baseURL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:3002/api/v1',
+    const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3002/api/v1';
+    console.log('🔗 API URL:', apiUrl); // Debug log
+    
+    this.api = axios.create({
+      baseURL: apiUrl,
       headers: {
-        'Content-Type': 'application/json',   //The data I’m sending will be in JSON format."
+        'Content-Type': 'application/json',
       },
     });
 
-// all methods:
-// async healthCheck()
-// async getProjects()
-// async getProject()
-// async createProject()
-// async updateProject()
-// async deleteProject()submitContact
-// async submitContact()
-// async getContacts()
-// async login()
-// async getProfile()
-// async logout()
-// async uploadFiles()
-
-    // Request interceptor to add auth token
+    // Request interceptor
     this.api.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem('token');
@@ -47,15 +36,13 @@ class ApiService {
       (error) => Promise.reject(error)
     );
 
-    // Response interceptor for error handling
+    // Response interceptor
     this.api.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          // Handle unauthorized access
           localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          window.location.href = '/admin/login';
+          window.location.href = '/login';
         }
         return Promise.reject(error);
       }
@@ -68,32 +55,32 @@ class ApiService {
     return response.data;
   }
 
-  // Projects API
+  // Projects
   async getProjects(params?: {
     page?: number;
     limit?: number;
     category?: string;
     status?: string;
   }): Promise<PaginatedResponse<Project>> {
-    const response: AxiosResponse<ApiResponse<PaginatedResponse<Project>>> = 
+    const response: AxiosResponse<ApiResponse<PaginatedResponse<Project>>> =
       await this.api.get('/projects', { params });
     return response.data.data!;
   }
 
   async getProject(id: string): Promise<Project> {
-    const response: AxiosResponse<ApiResponse<Project>> = 
+    const response: AxiosResponse<ApiResponse<Project>> =
       await this.api.get(`/projects/${id}`);
     return response.data.data!;
   }
 
   async createProject(data: ProjectFormData): Promise<Project> {
-    const response: AxiosResponse<ApiResponse<Project>> = 
+    const response: AxiosResponse<ApiResponse<Project>> =
       await this.api.post('/projects', data);
     return response.data.data!;
   }
 
   async updateProject(id: string, data: Partial<ProjectFormData>): Promise<Project> {
-    const response: AxiosResponse<ApiResponse<Project>> = 
+    const response: AxiosResponse<ApiResponse<Project>> =
       await this.api.put(`/projects/${id}`, data);
     return response.data.data!;
   }
@@ -102,9 +89,9 @@ class ApiService {
     await this.api.delete(`/projects/${id}`);
   }
 
-  // Contact API
+  // Contact
   async submitContact(data: ContactFormData): Promise<Contact> {
-    const response: AxiosResponse<ApiResponse<Contact>> = 
+    const response: AxiosResponse<ApiResponse<Contact>> =
       await this.api.post('/contact', data);
     return response.data.data!;
   }
@@ -114,36 +101,37 @@ class ApiService {
     limit?: number;
     status?: string;
   }): Promise<PaginatedResponse<Contact>> {
-    const response: AxiosResponse<ApiResponse<PaginatedResponse<Contact>>> = 
+    const response: AxiosResponse<ApiResponse<PaginatedResponse<Contact>>> =
       await this.api.get('/contact', { params });
     return response.data.data!;
   }
 
-  // Auth API
+  // Auth
   async login(email: string, password: string): Promise<{ user: User; token: string }> {
-    const response: AxiosResponse<ApiResponse<{ user: User; token: string }>> = 
+    const response: AxiosResponse<ApiResponse<{ user: User; token: string }>> =
       await this.api.post('/auth/login', { email, password });
     return response.data.data!;
   }
 
   async getProfile(): Promise<User> {
-    const response: AxiosResponse<ApiResponse<User>> = 
+    const response: AxiosResponse<ApiResponse<User>> =
       await this.api.get('/auth/profile');
     return response.data.data!;
   }
 
   async logout(): Promise<void> {
     await this.api.post('/auth/logout');
+    localStorage.removeItem('token');
   }
 
   // File upload
   async uploadFiles(files: FileList): Promise<string[]> {
     const formData = new FormData();
-    Array.from(files).forEach(file => {
-      formData.append('images', file);
+    Array.from(files).forEach((file, index) => {
+      formData.append(`files`, file);
     });
 
-    const response: AxiosResponse<ApiResponse<{ files: Array<{ url: string }> }>> = 
+    const response: AxiosResponse<ApiResponse<{ files: Array<{ url: string }> }>> =
       await this.api.post('/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
