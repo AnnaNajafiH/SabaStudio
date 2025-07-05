@@ -1,7 +1,9 @@
+// custom hooks "useProjects" and "useProject"
 import { useState, useEffect } from 'react';
 import { Project, PaginatedResponse } from '../types';
 import { apiService } from '../services/api';
 
+//UseProjects Hook
 export const useProjects = (params?: {
   page?: number;
   limit?: number;
@@ -12,7 +14,7 @@ export const useProjects = (params?: {
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
-    limit: 10,
+    limit: 12,
     totalPages: 0,
   });
   const [loading, setLoading] = useState(true);
@@ -54,6 +56,7 @@ export const useProjects = (params?: {
   };
 };
 
+//UseProject Hook
 export const useProject = (id: string) => {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);

@@ -223,7 +223,7 @@ const Home = () => {
               {featuredProjects.map((project, index) => (
                 <Link
                   key={project._id}
-                  to={`/projects/${project.slug}`}
+                  to={`/projects/${project._id}`}
                   className="group block"
                 >
                   <div className="relative overflow-hidden bg-white rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 border border-gray-100">

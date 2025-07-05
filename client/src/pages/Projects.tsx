@@ -4,8 +4,8 @@ import { Project, ProjectCategory, PROJECT_CATEGORIES_WITH_ALL } from '../types'
 import { useProjects } from '../hooks/useProjects';
 
 const Projects = () => {
-  const [displayLimit, setDisplayLimit] = useState(12); // Start with 12 projects
-  const { projects, loading, error } = useProjects({ limit: 50 }); // Fetch all projects but control display
+  const [displayLimit, setDisplayLimit] = useState(12); // Start with 12 projects 
+  const { projects, loading, error } = useProjects({ limit: 60  }); // Fetch all projects but control display
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All'); //all  means no category filter
@@ -156,7 +156,7 @@ const Projects = () => {
                 {displayedProjects.map((project) => (
                 <Link
                   key={project._id}
-                  to={`/projects/${project.slug}`}
+                  to={`/projects/${project._id}`}
                   className="group block"
                 >
                   <div className="card overflow-hidden group-hover:shadow-xl transition-all duration-300">

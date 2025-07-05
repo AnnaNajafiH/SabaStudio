@@ -1,36 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Project } from '../types';
-import { apiService } from '../services/api';
+import { useProject } from '../hooks/useProjects';
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [project, setProject] = useState<Project | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { project, loading, error } = useProject(id || '');   // custom hook
 
   useEffect(() => {
     if (!id) {
       navigate('/projects');
       return;
     }
-
-    const fetchProject = async () => {
-      try {
-        setLoading(true);
-        const data = await apiService.getProject(id);
-        setProject(data);
-      } catch (err) {
-        setError('Failed to load project details');
-        console.error('Error fetching project:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProject();
   }, [id, navigate]);
 
   const nextImage = () => {
@@ -208,25 +191,25 @@ const ProjectDetail = () => {
                 {project.client && (
                   <div>
                     <dt className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Client</dt>
-                    <dd className="text-lg text-gray-900">{project.client}</dd>
+                    <dd className="text-md text-gray-900">{project.client}</dd>
                   </div>
                 )}
                 {project.location && (
                   <div>
                     <dt className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Location</dt>
-                    <dd className="text-lg text-gray-900">{project.location}</dd>
+                    <dd className="text-md text-gray-900">{project.location}</dd>
                   </div>
                 )}
                 {project.year && (
                   <div>
                     <dt className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Year</dt>
-                    <dd className="text-lg text-gray-900">{project.year}</dd>
+                    <dd className="text-md text-gray-900">{project.year}</dd>
                   </div>
                 )}
                 {project.area && (
                   <div>
                     <dt className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Area</dt>
-                    <dd className="text-lg text-gray-900">{project.area.toLocaleString()} sq ft</dd>
+                    <dd className="text-md text-gray-900">{project.area.toLocaleString()} sq ft</dd>
                   </div>
                 )}
               </div>
