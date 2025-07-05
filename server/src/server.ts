@@ -38,10 +38,12 @@ const allowedOrigins = NODE_ENV === 'development'
       'http://127.0.0.1:5173',
       'http://127.0.0.1:5174',
       'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001',
-      'https://sabastudio-frontend.onrender.com'
+      'http://127.0.0.1:3001'
     ]
-  : [CORS_ORIGIN];
+  : [
+      'https://sabastudio-frontend.onrender.com',
+      CORS_ORIGIN
+    ];
 
 console.log(`🔧 CORS Configuration:`, {
   NODE_ENV,
