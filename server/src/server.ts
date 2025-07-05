@@ -147,6 +147,36 @@ app.get('/', (req, res) => {
   });
 });
 
+// Database test endpoint
+app.get('/test-db', async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const connectionState = mongoose.connection.readyState;
+    const states = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+    
+    res.json({
+      status: 'success',
+      database: {
+        state: states[connectionState],
+        host: mongoose.connection.host,
+        name: mongoose.connection.name,
+        port: mongoose.connection.port
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Database test failed',
+      error: (error as Error).message
+    });
+  }
+});
+
 // API routes
 app.use('/api/v1', apiRoutes);
 
