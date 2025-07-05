@@ -13,13 +13,26 @@ router.use('/contact', contactRoutes);
 // Welcome route
 router.get('/', (req: Request, res: Response) => {
   res.json({
-    message: 'Welcome to S\\Studio API',
+    status: 'success',
+    message: 'Welcome to S-Studio API v1',
     version: '1.0.0',
     endpoints: {
-      projects: '/api/v1/projects',
-      auth: '/api/v1/auth',
-      contact: '/api/v1/contact'
-    }
+      projects: {
+        base: '/api/v1/projects',
+        featured: '/api/v1/projects/featured',
+        categories: '/api/v1/projects/categories',
+        byCategory: '/api/v1/projects/category/:category',
+        byId: '/api/v1/projects/:id'
+      },
+      contact: {
+        submit: 'POST /api/v1/contact',
+        test: 'GET /api/v1/contact/test'
+      },
+      auth: {
+        login: 'POST /api/v1/auth/login'
+      }
+    },
+    timestamp: new Date().toISOString()
   });
 });
 

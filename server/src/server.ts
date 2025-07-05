@@ -113,6 +113,37 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Root endpoint - Welcome message
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Welcome to S-Studio API',
+    version: '1.0.0',
+    description: 'Backend API for SabaStudio Architecture Website',
+    endpoints: {
+      health: '/health',
+      api: '/api/v1',
+      projects: '/api/v1/projects',
+      contact: '/api/v1/contact',
+      auth: '/api/v1/auth'
+    },
+    documentation: {
+      projects: {
+        'GET /api/v1/projects': 'Get all projects with pagination and filtering',
+        'GET /api/v1/projects/featured': 'Get featured projects',
+        'GET /api/v1/projects/categories': 'Get project categories',
+        'GET /api/v1/projects/:id': 'Get specific project by ID'
+      },
+      contact: {
+        'POST /api/v1/contact': 'Submit contact form',
+        'GET /api/v1/contact/test': 'Test email service (admin only)'
+      }
+    },
+    timestamp: new Date().toISOString(),
+    environment: NODE_ENV
+  });
+});
+
 // API routes
 app.use('/api/v1', apiRoutes);
 
