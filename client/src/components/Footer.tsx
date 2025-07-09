@@ -11,10 +11,10 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="space-y-4">
             <Link to="/" className="inline-flex items-center space-x-2">
-              <div className="w-8 h-8 bg-accent-400 rounded flex items-center justify-center">
+              {/* <div className="w-8 h-8 bg-accent-400 rounded flex items-center justify-center">
                 <span className="text-primary-900 font-bold text-lg">S\</span>
-              </div>
-              <span className="text-xl font-serif font-semibold">S\Studio</span>
+              </div> */}
+              <span className="text-xl text-accent-400 font-serif font-semibold">S\Studio</span>
             </Link>
             <p className="text-primary-300 text-sm leading-relaxed max-w-sm">
               Innovative architectural design studio creating exceptional spaces that blend creativity with functionality.

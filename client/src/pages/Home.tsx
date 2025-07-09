@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-custom text-white py-20">
+      <section className="bg-gradient-to-br from-primary-900 to-neutral-200 text-white py-20">
         <div className="container-max section-padding">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">

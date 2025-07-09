@@ -16,7 +16,6 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "seed": "npx ts-node src/utils/seedDatabase.ts",
     "seed:projects": "npx ts-node src/utils/seedProjects.ts",
-    "seed:quick": "npx ts-node src/utils/quickSeed.ts",
     "seed:build": "npm run build && node dist/utils/seedDatabase.js"
   },
   "keywords": [

@@ -40,10 +40,7 @@ const allowedOrigins = NODE_ENV === 'development'
       'http://127.0.0.1:3000',
       'http://127.0.0.1:3001'
     ]
-  : [
-      'https://sabastudio-frontend.onrender.com',
-      CORS_ORIGIN
-    ];
+  : [CORS_ORIGIN];
 
 console.log(`🔧 CORS Configuration:`, {
   NODE_ENV,
@@ -145,36 +142,6 @@ app.get('/', (req, res) => {
     timestamp: new Date().toISOString(),
     environment: NODE_ENV
   });
-});
-
-// Database test endpoint
-app.get('/test-db', async (req, res) => {
-  try {
-    const mongoose = require('mongoose');
-    const connectionState = mongoose.connection.readyState;
-    const states = {
-      0: 'disconnected',
-      1: 'connected',
-      2: 'connecting',
-      3: 'disconnecting'
-    };
-    
-    res.json({
-      status: 'success',
-      database: {
-        state: states[connectionState],
-        host: mongoose.connection.host,
-        name: mongoose.connection.name,
-        port: mongoose.connection.port
-      }
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      message: 'Database test failed',
-      error: (error as Error).message
-    });
-  }
 });
 
 // API routes
