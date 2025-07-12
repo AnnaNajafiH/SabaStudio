@@ -11,6 +11,8 @@ import {
   toggleFeatured,
   togglePublished
 } from '../controllers/projectController';
+import { authenticateToken } from '../middleware/auth';
+import { isAdmin } from '../middleware/adminAuth';
 
 const router = Router();
 
@@ -21,11 +23,11 @@ router.get('/categories', getProjectCategories);
 router.get('/category/:category', getProjectsByCategory);
 router.get('/:id', getProject);
 
-// Admin routes (would need authentication middleware)
-router.post('/', createProject);
-router.put('/:id', updateProject);
-router.delete('/:id', deleteProject);
-router.patch('/:id/featured', toggleFeatured);
-router.patch('/:id/published', togglePublished);
+// Admin routes - protected with authentication and admin check
+router.post('/', authenticateToken, isAdmin, createProject);
+router.put('/:id', authenticateToken, isAdmin, updateProject);
+router.delete('/:id', authenticateToken, isAdmin, deleteProject);
+router.patch('/:id/featured', authenticateToken, isAdmin, toggleFeatured);
+router.patch('/:id/published', authenticateToken, isAdmin, togglePublished);
 
 export default router;

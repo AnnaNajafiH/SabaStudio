@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Project, ProjectCategory, PROJECT_CATEGORIES_WITH_ALL } from '../types';
+import { Project, PROJECT_CATEGORIES_WITH_ALL } from '../types';
 import { useProjects } from '../hooks/useProjects';
 
 const Projects = () => {

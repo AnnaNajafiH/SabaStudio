@@ -1,26 +1,18 @@
-# SabaArchitect
+# SabaStudio
 
 A professional web application for architecture services built with modern fullstack technologies.
-
-##  Project Structure
-
-```
-SabaArchitect/
-├── client/          # React + TypeScript frontend
-├── server/          # Node.js + Express + TypeScript backend
-├── shared/          # Shared types and interfaces
-├── docker/          # Docker configuration files
-├── README.md        # This file
-└── .gitignore       # Git ignore rules
-```
 
 ## 🚀 Technologies
 
 ### Frontend (Client)
-- **React** 
-- **TypeScript** 
-- **Vite**
-- **Tailwind CSS** 
+- **React 18** - Modern UI library
+- **TypeScript** - Type-safe development
+- **Vite** - Next-generation frontend tooling
+- **Tailwind CSS** - Utility-first CSS framework
+- **React Router** - Client-side routing
+- **React Query** - Data fetching and caching
+- **Axios** - HTTP client
+- **Context API** - State management
 
 ### Backend (Server)
 - **Node.js** - Runtime environment
@@ -31,17 +23,13 @@ SabaArchitect/
 - **Express-validator** - Input validation
 - **Express-rate-limit** - Rate limiting middleware
 - **JWT** - Authentication tokens
-- **Bcrypt** - Password hashing 
-
-### DevOps
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
+- **Bcrypt** - Password hashing
 
 ## 📋 Prerequisites
 
 - Node.js (v18 or higher)
 - npm or yarn
-- Docker & Docker Compose
+- MongoDB database
 
 ## 🛠️ Getting Started
 
@@ -50,11 +38,14 @@ SabaArchitect/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd SabaArchitect
+   cd SabaStudio
    ```
 
 2. **Install dependencies**
    ```bash
+   # Root dependencies
+   npm install
+
    # Install client dependencies
    cd client
    npm install
@@ -69,7 +60,10 @@ SabaArchitect/
    # Server environment
    cd server
    cp .env.example .env
-   # Edit .env with your MongoDB URI and email credentials
+   # Edit .env with your:
+   # - MongoDB URI
+   # - JWT secret
+   # - Email credentials (optional)
    ```
 
 4. **Start development servers**
@@ -78,26 +72,35 @@ SabaArchitect/
    cd client
    npm run dev
    
-   # Terminal 2 - Start server (full setup)
+   # Terminal 2 - Start server
    cd server
    npm run dev
-   
-   # OR Terminal 2 - Start test server (no database required)
-   cd server
-   npm run test-server
    ```
 
-### Docker Setup
+## 📁 Project Structure
 
-1. **Build and run with Docker Compose**
-   ```bash
-   docker-compose up --build
-   ```
-
-## 📁 Detailed Structure
-
-### Client (Frontend)
-- Modern React application with TypeScript
+```
+SabaStudio/
+├── client/                # React frontend
+│   ├── public/           # Static files
+│   └── src/
+│       ├── components/   # Reusable components
+│       ├── constants/    # App constants
+│       ├── hooks/        # Custom hooks
+│       ├── pages/        # Page components
+│       ├── services/     # API services
+│       └── types/        # TypeScript types
+│
+├── server/               # Express backend
+│   └── src/
+│       ├── config/      # App configuration
+│       ├── controllers/ # Route controllers
+│       ├── middleware/  # Express middleware
+│       ├── models/      # Database models
+│       ├── routes/      # API routes
+│       └── services/    # Business logic
+│
+└── README.md            # Project documentation
 - Responsive design for architecture showcase
 - Component-based architecture
 - State management (Context API/Redux)
@@ -173,11 +176,11 @@ SabaArchitect/
 ## 👤 Author
 - Nahid Najafi 
 
-**Saba Architect**
+**SStudio**
 - Professional Architecture Services
 - Modern Web Solutions
 
 ---
 
-*Built with ❤️ for SabaArchitect*
-# SabaArchitect
+*Built with ❤️ for SStudio*
+# SStudio

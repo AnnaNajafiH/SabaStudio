@@ -2,12 +2,18 @@ import mongoose from 'mongoose';
 
 const connectDatabase = async (): Promise<void> => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/sstudio';
+    const mongoUri = process.env.MONGODB_URI;
+    
+    if (!mongoUri) {
+      throw new Error('MONGODB_URI is not defined in environment variables');
+    }
     
     const options = {
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
+      autoIndex: true,
+      retryWrites: true,
     };
 
     await mongoose.connect(mongoUri, options);

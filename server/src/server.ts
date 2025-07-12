@@ -15,7 +15,9 @@ import apiRoutes from './routes';
 // Load environment variables
 dotenv.config();
 
-// Create Express application
+//==========================================================================
+// App and Environment Configuration
+//==========================================================================
 const app = express();
 
 // Environment variables with defaults
@@ -23,7 +25,9 @@ const PORT = process.env.PORT || 3002;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
 
-// Security middleware
+//==========================================================================
+// Security and CORS Configuration
+//==========================================================================
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
@@ -86,23 +90,25 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Compression middleware
+//==========================================================================
+// Middleware Configuration
+//==========================================================================
+// Compression
 app.use(compression());
 
-// Logging middleware
-if (NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-} else {
-  app.use(morgan('combined'));
-}
+// Logging
+app.use(morgan(NODE_ENV === 'development' ? 'dev' : 'combined'));
 
-// Body parsing middleware
+// Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files for uploads
+// Static files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+//==========================================================================
+// Basic Routes
+//==========================================================================
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -113,7 +119,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Root endpoint - Welcome message
+// Root endpoint - API Documentation
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -144,16 +150,19 @@ app.get('/', (req, res) => {
   });
 });
 
-// API routes
+//==========================================================================
+// API Routes and Error Handling
+//==========================================================================
+// Main API routes
 app.use('/api/v1', apiRoutes);
 
-// 404 handler
+// Error handlers
 app.use(notFoundHandler);
-
-// Global error handler
 app.use(errorHandler);
 
-// Start server function
+//==========================================================================
+// Server Startup
+//==========================================================================
 const startServer = async (): Promise<void> => {
   try {
     // Try to connect to database (optional for development)
@@ -176,15 +185,16 @@ const startServer = async (): Promise<void> => {
   }
 };
 
-// Handle graceful shutdown:
-
-// this signal sent when the system or a container manager tells the process to terminate (e.g., docker stop or Railway shutting down the container).
+//==========================================================================
+// Graceful Shutdown Handlers
+//==========================================================================
+// SIGTERM - sent by system or container manager (e.g., docker stop)
 process.on('SIGTERM', () => {
   console.log('🛑 SIGTERM received, shutting down gracefully');
   process.exit(0);
 });
 
-// this Signal sent when you press Ctrl+C in the terminal (interrupt signal).
+// SIGINT - sent by Ctrl+C in terminal
 process.on('SIGINT', () => {
   console.log('🛑 SIGINT received, shutting down gracefully');
   process.exit(0);
