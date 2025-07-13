@@ -22,7 +22,6 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       required: [true, 'Email is required'],
-      unique: true,
       trim: true,
       lowercase: true,
       match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email']
@@ -48,12 +47,12 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-// Create compound index for email (unique, case-insensitive)
+// Add a unique index for email with case-insensitive collation
 userSchema.index(
-  { email: 1 },   //this says: Create an index on the email field, sorted in ascending order.
-  {
+  { email: 1 }, 
+  { 
     unique: true,
-    collation: { locale: 'en', strength: 2 },  //This ensures case-insensitive uniqueness
+    collation: { locale: 'en', strength: 2 }  // Case-insensitive
   }
 );
 

@@ -22,47 +22,50 @@ export const configureMiddleware = (app: express.Application) => {
   }));
 
   // CORS configuration with proper credentials support
-  const allowedOrigins = config.server.env === 'development'
-    ? config.cors.developmentOrigins
-    : [config.cors.origin];
+  const corsOptions = {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      console.log(`🌐 CORS request from origin: ${origin || 'No Origin'}`);
+      
+      if (config.server.env === 'development') {
+        console.log('✅ Development mode - allowing all origins');
+        callback(null, true);
+        return;
+      }
 
-  console.log(`🔧 CORS Configuration:`, {
+      // In production, check against allowed origins
+      const allowedOrigins = [config.cors.origin];
+      
+      // Allow requests with no origin (like mobile apps, curl)
+      if (!origin) {
+        console.log('✅ No origin - allowing request');
+        callback(null, true);
+        return;
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        console.log(`✅ Origin ${origin} allowed`);
+        callback(null, true);
+        return;
+      }
+
+      console.log(`❌ Origin ${origin} not allowed`);
+      callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cookie'],
+    exposedHeaders: ['Set-Cookie'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  };
+
+  console.log('🔧 CORS Configuration:', {
     environment: config.server.env,
-    allowedOrigins,
+    allowedOrigins: config.server.env === 'development' ? ['all'] : [config.cors.origin],
     credentials: true
   });
 
-  app.use(cors({
-    origin: (origin, callback) => {
-      console.log(`🌐 CORS request from origin: ${origin || 'No Origin'}`);
-      
-      // Allow requests with no origin (mobile apps, curl, Postman, etc.)
-      if (!origin) {
-        console.log(`✅ No origin - allowing request`);
-        return callback(null, true);
-      }
-      
-      // In development mode, be more permissive with localhost
-      if (config.server.env === 'development' && (origin.includes('localhost') || origin.includes('127.0.0.1'))) {
-        console.log(`✅ Origin ${origin} allowed (localhost/127.0.0.1)`);
-        return callback(null, true);
-      }
-
-      // Check against allowed origins
-      if (allowedOrigins.includes(origin)) {
-        console.log(`✅ Origin ${origin} allowed (in allowed list)`);
-        return callback(null, true);
-      }
-      
-      // If we get here, the origin is not allowed
-      console.log(`❌ Origin ${origin} not allowed`);
-      callback(new Error('Not allowed by CORS'), false);
-    },
-    credentials: true,  // Enable credentials
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
-    exposedHeaders: ['Set-Cookie']  // Expose Set-Cookie header
-  }));
+  app.use(cors(corsOptions));
 
   // Cookie parser middleware
   app.use(cookieParser());

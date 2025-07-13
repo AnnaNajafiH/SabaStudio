@@ -9,10 +9,13 @@ export const config = {
     env: process.env.NODE_ENV || 'development',
   },
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: process.env.CORS_ORIGIN || 'https://sabastudio-frontend.onrender.com',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: ['set-cookie'],
+    preflightContinue: true,
+    optionsSuccessStatus: 204,
     developmentOrigins: [
       'http://localhost:5173',
       'http://localhost:5174',
@@ -21,7 +24,8 @@ export const config = {
       'http://127.0.0.1:5173',
       'http://127.0.0.1:5174',
       'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001'
+      'http://127.0.0.1:3001',
+      'https://sabastudio-frontend.onrender.com'
     ]
   },
   api: {
