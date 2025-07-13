@@ -2,154 +2,153 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
+import { config } from '../config/app.config';
 
-
+//==========================================================================
+// Helper function to set auth cookie
+//==========================================================================
+const setAuthCookie = (res: Response, token: string) => {
+  // Set httpOnly cookie
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: config.server.env === 'production', // true in production
+    sameSite: config.server.env === 'production' ? 'strict' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    path: '/'
+  });
+};
 
 //==========================================================================
 // Register new user
 //==========================================================================
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, email, password } = req.body;
+    const name = req.body.name;
+    const email = req.body.email?.toLowerCase().trim(); // Normalize email
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+
+    // Check password match
+    if (password !== confirmPassword) {
       return res.status(400).json({
         status: 'error',
-        message: 'User already exists',
+        message: 'Passwords do not match',
       });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role: 'user',
-    });
-
-    await newUser.save();
-
-    const token = jwt.sign(
-      { id: newUser._id, role: newUser.role },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '7d' }
-    );
-
-    res
-      .cookie('token', token, {
-        path: '/',
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      })
-      .status(201)
-      .json({
-        status: 'success',
-        data: {
-          token,
-          user: {
-            id: newUser._id,
-            name: newUser.name,
-            email: newUser.email,
-            role: newUser.role,
-          },
-        },
-      });
-  } catch (error: any) {
-
-    // Duplicate email error
-    if (error.code === 11000) {
+    // Check if user exists with case-insensitive email
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      console.log('❌ Signup failed: Email already exists:', email);
       return res.status(400).json({
         status: 'error',
         message: 'Email address is already registered',
       });
     }
 
-    // Mongoose validation error
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map((err: any) => err.message);
-      return res.status(400).json({
-        status: 'error',
-        message: messages.join(', '),
-      });
-    }
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Generic error
-    res.status(500).json({
-      status: 'error',
-      message: 'Internal server error',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    // Create new user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword, 
+      //no need to save confirmedpassword in database
     });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
+    // Set auth cookie
+    setAuthCookie(res, token);
+
+    console.log('✅ Signup successful for:', email);
+
+    // Send response
+    res.status(201).json({
+      status: 'success',
+      message: 'User registered successfully',
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email
+        }
+      }
+    });
+  } catch (error) {
+    console.error('❌ Signup error:', error);
+    next(error);
   }
 };
-
-
 
 //==========================================================================
 // Login user
 //==========================================================================
-
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = email?.toLowerCase().trim();
 
-    // Check if user exists
-    const user = await User.findOne({ email });
+    console.log('🔐 Login attempt for email:', normalizedEmail);
+
+    // Find user
+    const user = await User.findOne({ email: normalizedEmail }).select('+password');
     if (!user) {
+      console.log('❌ Login failed: User not found:', normalizedEmail);
       return res.status(401).json({
         status: 'error',
-        message: 'Invalid email or password',
+        message: 'no user found with this email address'
       });
     }
 
-    // Compare passwords
+    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('❌ Login failed: Invalid password for:', normalizedEmail);
       return res.status(401).json({
         status: 'error',
-        message: 'Invalid email or password',
+        message: 'Invalid credentials'
       });
     }
 
     // Generate token
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { userId: user._id },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '7d' }
     );
 
-    // Send cookie and response
-    res
-      .cookie('token', token, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production',
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      })
-      .status(200)
-      .json({
-        status: 'success',
-        data: {
-          token,
-          user: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-          },
-        },
-      });
+    // Set auth cookie
+    setAuthCookie(res, token);
+
+    console.log('✅ Login successful for:', normalizedEmail);
+
+    // Send response
+    res.status(200).json({
+      status: 'success',
+      message: 'Login successful',
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      }
+    });
   } catch (error) {
-    console.error('Login error:', error);
-    next(error); // Use centralized error handler
+    console.error('❌ Login error:', error);
+    next(error);
   }
 };
-
 
 //==========================================================================
 // Logout user
@@ -391,25 +390,46 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 //==========================================================================
 // Logout user
 //==========================================================================
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Clear the JWT cookie
-    res.cookie('token', '', {
-      path: '/',
+    res.clearCookie('token', {
       httpOnly: true,
-      expires: new Date(0), // Expire immediately
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production'
+      secure: config.server.env === 'production',
+      sameSite: config.server.env === 'production' ? 'strict' : 'lax',
+      path: '/'
     });
 
-    res.status(200).json({
+    res.status(200).json({ 
       status: 'success',
-      message: 'Successfully logged out'
+      message: 'Logged out successfully' 
     });
   } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      message: 'Error during logout'
+    next(error);
+  }
+};
+
+//==========================================================================
+// Diagnostic route - Remove in production
+//==========================================================================
+export const checkEmailExists = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ message: 'Email parameter is required' });
+    }
+
+    // Find all users with similar email (case insensitive)
+    const users = await User.find({
+      email: { $regex: new RegExp(email as string, 'i') }
+    }).select('email');
+
+    res.json({
+      exists: users.length > 0,
+      matches: users.map(u => u.email),
+      searchedFor: email
     });
+  } catch (error) {
+    console.error('Email check error:', error);
+    res.status(500).json({ message: 'Error checking email' });
   }
 };
