@@ -4,13 +4,12 @@ import { useAuth } from '../hooks/useAuth.tsx';
 import { useProjects } from '../hooks/useProjects';
 
 const Admin = () => {
-  const { user, isAuthenticated, login, logout, isLoading } = useAuth();
+  const { user, isAuthenticated, signin, signout, error: authError, clearError } = useAuth();
   const { projects } = useProjects();
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
   });
-  const [loginError, setLoginError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   // Sample analytics data
@@ -31,23 +30,29 @@ const Admin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
-    setLoginError('');
+    clearError();
 
     try {
-      await login(loginData.email, loginData.password);
-    } catch (error) {
-      setLoginError('Invalid credentials. Please try again.');
+      await signin(loginData.email, loginData.password);
+      // Note: No need to navigate - the useEffect with isAuthenticated will handle that
+    } catch (error: any) {
+      console.error('Sign in error:', error);
+      clearError(); // Clear any previous errors
+      if (error?.response?.data?.message) {
+        // If we have a specific error message from the API
+        clearError();
+      }
     } finally {
       setIsLoggingIn(false);
     }
   };
 
   const handleLogout = () => {
-    logout();
+    signout();
   };
 
   // Loading state
-  if (isLoading) {
+  if (isLoggingIn) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="loading-spinner"></div>
@@ -75,9 +80,9 @@ const Admin = () => {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            {loginError && (
+            {authError && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm text-red-800">{loginError}</p>
+                <p className="text-sm text-red-800">{authError}</p>
               </div>
             )}
 

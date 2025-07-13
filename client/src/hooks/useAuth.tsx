@@ -1,85 +1,57 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
-
-interface User {
-  _id: string;
-  email: string;
-  name: string;
-  role: string;
-}
+import ApiService from '../services/api';
+import { User } from '../types';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  signup: (email: string, password: string, name: string) => Promise<void>;
+  signup: (email: string, password: string, name: string, confirmPassword: string) => Promise<void>;
   signin: (email: string, password: string) => Promise<void>;
-  signout: () => void;
+  signout: () => Promise<void>;
   clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
-const API_BASE_URL = 'http://localhost:3003/api/v1';
+const api = new ApiService();
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Check auth status on mount
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchUserProfile(token);
-    } else {
-      setLoading(false);
-    }
+    checkAuthStatus();
   }, []);
 
-  const fetchUserProfile = async (token: string) => {
+  const checkAuthStatus = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/auth/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUser(response.data.data);
-    } catch (err: any) {
-      console.error('Profile fetch error:', err.response?.data || err);
-      localStorage.removeItem('token');
+      const response = await api.getProfile();
+      if (response.status === 'success' && response.data?.user) {
+        setUser(response.data.user);
+      }
+    } catch (err) {
+      console.log('Not authenticated');
       setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const signup = async (email: string, password: string, name: string) => {
+  const signup = async (email: string, password: string, name: string, confirmPassword: string) => {
     try {
       setError(null);
-      const response = await axios.post(`${API_BASE_URL}/auth/signup`, {
-        email,
-        password,
-        name
-      });
-      
-      if (!response.data || !response.data.data || !response.data.data.token) {
-        throw new Error('Invalid response format from server');
+      const response = await api.signup(name, email, password, confirmPassword);
+      if (response.status === 'success' && response.data?.user) {
+        setUser(response.data.user);
+      } else {
+        throw new Error(response.message || 'Signup failed');
       }
-
-      const { token, user } = response.data.data;
-      localStorage.setItem('token', token);
-      
-      // Set up axios defaults for future requests
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      // Set user directly from signup response
-      setUser(user);
-      
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 
-                          err.message || 
-                          'An error occurred during signup';
-      console.error('Signup error:', errorMessage);
-      setError(errorMessage);
+      console.error('Signup error:', err);
+      setError(err.response?.data?.message || err.message || 'An error occurred during signup');
       throw err;
     }
   };
@@ -87,40 +59,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signin = async (email: string, password: string) => {
     try {
       setError(null);
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
-        email,
-        password
-      });
-      const { token } = response.data.data;
-      localStorage.setItem('token', token);
-      const userResponse = await axios.get(`${API_BASE_URL}/auth/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUser(userResponse.data.data);
+      const response = await api.signin(email, password);
+      if (response.status === 'success' && response.data?.user) {
+        setUser(response.data.user);
+      } else {
+        throw new Error(response.message || 'Login failed');
+      }
     } catch (err: any) {
-      console.error('Signin error:', err.response?.data || err);
-      setError(err.response?.data?.message || 'Invalid credentials');
+      console.error('Signin error:', err);
+      setError(err.response?.data?.message || err.message || 'Invalid credentials');
       throw err;
     }
   };
 
   const signout = async () => {
     try {
-      await axios.post(`${API_BASE_URL}/auth/logout`);
-    } catch (err) {
-      console.error('Logout error:', err);
-    } finally {
-      localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
+      await api.signout();
       setUser(null);
+    } catch (err: any) {
+      console.error('Signout error:', err);
+      // Even if the logout API fails, we clear the user state
+      setUser(null);
+      throw err;
     }
   };
 
   const clearError = () => setError(null);
 
   return (
-    <AuthContext.Provider 
-    value={{
+    <AuthContext.Provider value={{
       user,
       loading,
       error,
