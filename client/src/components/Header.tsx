@@ -33,11 +33,10 @@ const Header = () => {
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-11 h-4 flex items-center justify-center"
             style={{
-              backgroundImage: 'url("../../public/images/logo.jpg")',
+              backgroundImage: 'url("/images/logo.jpg")',
               backgroundSize: 'cover',
               borderRadius: '0px',
                }}>
-
             </div>
             {/* <span className="text-xl font-serif font-semibold text-primary-900">
             S\Studio
