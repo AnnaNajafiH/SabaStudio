@@ -15,7 +15,7 @@ class ApiService {
 
   constructor() {
     this.api = axios.create({    //Inside my apiService object, I’m creating a property called api and assigning to it this customized axios instance.”
-      baseURL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001/api/v1',
+      baseURL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:3003/api',
       headers: {
         'Content-Type': 'application/json',   //The data I’m sending will be in JSON format."
       },

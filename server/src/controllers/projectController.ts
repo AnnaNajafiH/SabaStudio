@@ -92,9 +92,9 @@ export const getProjects = async (
   }
 };
 
-
-
+//==========================================================================
 // Get single project by ID or slug
+//==========================================================================
 export const getProject = async (
   req: Request,
   res: Response,
@@ -145,10 +145,12 @@ export const getFeaturedProjects = async (
 ): Promise<void> => {
   try {
     const { limit = 6 } = req.query;
+    const limitNum = parseInt(limit as string);
 
     const projects = await Project.find({ featured: true, published: true })
       .sort({ year: -1 })
-      .limit(parseInt(limit as string));
+      .limit(limitNum)
+      .lean();
 
     res.status(200).json({
       success: true,
@@ -160,7 +162,9 @@ export const getFeaturedProjects = async (
   }
 };
 
+//==========================================================================
 // Get projects by category
+//==========================================================================
 export const getProjectsByCategory = async (
   req: Request,
   res: Response,
@@ -168,16 +172,7 @@ export const getProjectsByCategory = async (
 ): Promise<void> => {
   try {
     const { category } = req.params;
-    const { limit = 12, page = 1 } = req.query;
-
-    if (!category) {
-      res.status(400).json({
-        success: false,
-        message: 'Category parameter is required',
-        data: null
-      });
-      return;
-    }
+    const { page = 1, limit = 12 } = req.query;
 
     const pageNum = parseInt(page as string);
     const limitNum = parseInt(limit as string);
@@ -185,50 +180,46 @@ export const getProjectsByCategory = async (
 
     const [projects, total] = await Promise.all([
       Project.find({ category, published: true })
-        .sort({ year: -1 })
+        .sort('-year')
         .skip(skip)
-        .limit(limitNum),
+        .limit(limitNum)
+        .lean(),
       Project.countDocuments({ category, published: true })
     ]);
 
     const totalPages = Math.ceil(total / limitNum);
 
-    const response: PaginatedResponse<IProject> = {
-      data: projects,
-      total,
-      page: pageNum,
-      limit: limitNum,
-      totalPages,
-      hasNextPage: pageNum < totalPages,
-      hasPrevPage: pageNum > 1
-    };
-
     res.status(200).json({
       success: true,
-      message: `Projects in ${category} category retrieved successfully`,
-      data: response
+      message: 'Projects retrieved successfully',
+      data: {
+        projects,
+        total,
+        page: pageNum,
+        totalPages,
+        hasNextPage: pageNum < totalPages,
+        hasPrevPage: pageNum > 1
+      }
     });
   } catch (error) {
     next(error);
   }
 };
 
-// Get project categories with counts
+//==========================================================================
+// Get distinct project categories
+//==========================================================================
 export const getProjectCategories = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const categories = await Project.aggregate([
-      { $match: { published: true } },
-      { $group: { _id: '$category', count: { $sum: 1 } } },
-      { $sort: { count: -1 } }
-    ]);
-
+    const categories = await Project.distinct('category', { published: true });
+    
     res.status(200).json({
       success: true,
-      message: 'Project categories retrieved successfully',
+      message: 'Categories retrieved successfully',
       data: categories
     });
   } catch (error) {
@@ -236,14 +227,16 @@ export const getProjectCategories = async (
   }
 };
 
-// Create new project (Admin only)
+// Create new project
 export const createProject = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const project = new Project(req.body);
+    const projectData = req.body;
+    
+    const project = new Project(projectData);
     await project.save();
 
     res.status(201).json({
@@ -256,7 +249,9 @@ export const createProject = async (
   }
 };
 
-// Update project (Admin only)
+//==========================================================================
+// Update project
+//==========================================================================
 export const updateProject = async (
   req: Request,
   res: Response,
@@ -264,10 +259,11 @@ export const updateProject = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
+    const updates = req.body;
 
     const project = await Project.findByIdAndUpdate(
       id,
-      req.body,
+      { $set: updates },
       { new: true, runValidators: true }
     );
 
@@ -289,7 +285,9 @@ export const updateProject = async (
   }
 };
 
-// Delete project (Admin only)
+//==========================================================================
+// Delete project
+//==========================================================================
 export const deleteProject = async (
   req: Request,
   res: Response,
@@ -317,7 +315,9 @@ export const deleteProject = async (
   }
 };
 
-// Toggle project featured status (Admin only)
+//==========================================================================
+// Toggle project featured status
+//==========================================================================
 export const toggleFeatured = async (
   req: Request,
   res: Response,
@@ -336,7 +336,8 @@ export const toggleFeatured = async (
       return;
     }
 
-    await project.toggleFeatured();
+    project.featured = !project.featured;
+    await project.save();
 
     res.status(200).json({
       success: true,
@@ -348,7 +349,9 @@ export const toggleFeatured = async (
   }
 };
 
-// Toggle project published status (Admin only)
+//==========================================================================
+// Toggle project published status
+//==========================================================================
 export const togglePublished = async (
   req: Request,
   res: Response,
@@ -367,7 +370,8 @@ export const togglePublished = async (
       return;
     }
 
-    await project.togglePublished();
+    project.published = !project.published;
+    await project.save();
 
     res.status(200).json({
       success: true,

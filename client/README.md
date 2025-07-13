@@ -82,7 +82,7 @@ Create a `.env` file in the client directory:
 
 ```env
 VITE_API_URL=http://localhost:3001/api
-VITE_APP_NAME=SabaArchitect
+VITE_APP_NAME=SStudio
 ```
 
 ### Key Features
