@@ -67,9 +67,9 @@ export type ContactPriority = 'low' | 'medium' | 'high';
 
 export interface User {
   id: string;
-  email: string;
   name: string;
-  role: 'admin';
+  email: string;
+  role: 'admin' | 'user';
   avatar?: string;
   isActive: boolean;
   lastLogin?: string;
@@ -78,10 +78,15 @@ export interface User {
 }
 
 export interface ApiResponse<T = any> {
-  success: boolean;
+  status: 'success' | 'error';
   message?: string;
   data?: T;
-  error?: string;
+}
+
+export interface AuthResponse extends ApiResponse {
+  data: {
+    user: User;
+  };
 }
 
 export interface PaginatedResponse<T> {

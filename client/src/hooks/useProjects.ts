@@ -24,16 +24,17 @@ export const useProjects = (params?: {
     try {
       setLoading(true);
       setError(null);
-      const response: PaginatedResponse<Project> = await apiService.getProjects(params);
-      setProjects(response.data);  // Get the projects array from response.data
+      const response = await apiService.getProjects(params);
+      setProjects(response.data);
       setPagination({
         total: response.total,
         page: response.page,
         limit: response.limit,
         totalPages: response.totalPages,
       });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch projects');
+    } catch (err: any) {
+      console.error('Error fetching projects:', err);
+      setError(err.response?.data?.message || 'Failed to fetch projects');
     } finally {
       setLoading(false);
     }
@@ -69,8 +70,9 @@ export const useProject = (id: string) => {
         setError(null);
         const response = await apiService.getProject(id);
         setProject(response);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch project');
+      } catch (err: any) {
+        console.error('Error fetching project:', err);
+        setError(err.response?.data?.message || 'Failed to fetch project');
       } finally {
         setLoading(false);
       }
@@ -81,9 +83,26 @@ export const useProject = (id: string) => {
     }
   }, [id]);
 
+  const refetch = async () => {
+    if (id) {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await apiService.getProject(id);
+        setProject(response);
+      } catch (err: any) {
+        console.error('Error fetching project:', err);
+        setError(err.response?.data?.message || 'Failed to fetch project');
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   return {
     project,
     loading,
     error,
+    refetch,
   };
 };
