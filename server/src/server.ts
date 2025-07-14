@@ -49,7 +49,18 @@ const startServer = async () => {
 
   } catch (error) {
     console.error('❌ Failed to start server:', error);
-    process.exit(1);
+    // Log additional diagnostic information
+    console.error('Environment:', {
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      DATABASE_URL: process.env.MONGODB_URI?.split('@')[1], // Log only the host part of the URL
+      CORS_ORIGIN: process.env.CORS_ORIGIN
+    });
+    
+    // Wait a moment before exiting to ensure logs are written
+    setTimeout(() => {
+      process.exit(1);
+    }, 1000);
   }
 };
 

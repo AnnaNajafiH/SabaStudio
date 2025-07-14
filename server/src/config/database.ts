@@ -14,9 +14,7 @@ const connectDatabase = async (): Promise<void> => {
       socketTimeoutMS: 45000,
       autoIndex: process.env.NODE_ENV !== 'production', // Only create indexes in development
       retryWrites: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      family: 4, // Use IPv4, skip trying IPv6
+      family: 4 // Use IPv4, skip trying IPv6
     };
 
     await mongoose.connect(mongoUri, options);

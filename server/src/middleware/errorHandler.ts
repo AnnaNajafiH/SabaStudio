@@ -12,6 +12,10 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
+  // Prevent hanging if headers are already sent
+  if (res.headersSent) {
+    return next(error);
+  }
   // Set default error values
   let statusCode = error.statusCode || 500;
   let message = error.message || 'Internal Server Error';

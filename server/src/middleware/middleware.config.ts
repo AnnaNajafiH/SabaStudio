@@ -150,8 +150,15 @@ export const configureMiddleware = (app: express.Application) => {
   //==========================================================================
   console.log('🚧 Configuring error handlers...');
 
+  // 404 handler for unmatched routes
   app.use(notFoundHandler);
-  app.use(errorHandler);
 
+  // Global error handler - must be last
+  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.log('🚨 Error caught in global handler:', err);
+    errorHandler(err, req, res, next);
+  });
+
+  // Log successful middleware configuration
   console.log('✅ All middleware configured successfully');
 };

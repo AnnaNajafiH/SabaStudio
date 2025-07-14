@@ -7,7 +7,7 @@
     "dev": "nodemon src/server.ts",
     "prebuild": "npm install && npm install typescript @types/node --include=dev",
     "build": "tsc --build tsconfig.prod.json",
-    "postbuild": "mkdir -p dist/uploads && echo Build completed successfully",
+    "postbuild": "node -e \"const fs=require('fs'); const path=require('path'); const dir=path.join('dist','uploads'); if(!fs.existsSync(dir)){fs.mkdirSync(dir,{recursive:true})}; console.log('Build completed successfully');\"",
     "start": "node dist/server.js",
     "deploy": "npm run build && npm run start",
     "test": "jest",
