@@ -102,8 +102,12 @@ export const configureMiddleware = (app: express.Application) => {
   //==========================================================================
   console.log('📁 Configuring static file serving...');
 
-  const uploadsPath = path.join(__dirname, '..', '..', config.uploads.directory);
-  app.use('/uploads', express.static(uploadsPath));
+  // Ensure uploads directory exists and is accessible
+  const uploadsPath = path.join(__dirname, '..', '..', 'uploads');
+  app.use('/uploads', express.static(uploadsPath, {
+    maxAge: '1d',
+    fallthrough: false // Return 404 if file not found
+  }));
   console.log(`📂 Serving uploads from: ${uploadsPath}`);
 
   //==========================================================================

@@ -10,10 +10,13 @@ const connectDatabase = async (): Promise<void> => {
     
     const options = {
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 30000, // Increased timeout for Render's slow starts
       socketTimeoutMS: 45000,
-      autoIndex: true,
+      autoIndex: process.env.NODE_ENV !== 'production', // Only create indexes in development
       retryWrites: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      family: 4, // Use IPv4, skip trying IPv6
     };
 
     await mongoose.connect(mongoUri, options);
