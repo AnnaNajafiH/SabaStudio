@@ -39,13 +39,40 @@ class ApiService {
     category?: string;
     status?: string;
   }): Promise<PaginatedResponse<Project>> {
-    const response = await this.api.get<ApiResponse<PaginatedResponse<Project>>>('/projects', { params });
-    return response.data.data!;
+    try {
+      const response = await this.api.get<ApiResponse<PaginatedResponse<Project>>>('/projects', { params });
+      return response.data.data!;
+    } catch (error) {
+      console.warn('Failed to fetch projects from API, using fallback data:', error);
+      const { mockProjects, generateMockPaginatedResponse } = await import('../data/mockData');
+      
+      let filteredProjects = [...mockProjects];
+      
+      // Apply filters from params
+      if (params?.category) {
+        filteredProjects = filteredProjects.filter(p => p.category === params.category);
+      }
+      if (params?.status) {
+        filteredProjects = filteredProjects.filter(p => p.status === params.status);
+      }
+      
+      return generateMockPaginatedResponse(filteredProjects, params?.page, params?.limit);
+    }
   }
 
   async getProject(id: string): Promise<Project> {
-    const response = await this.api.get<ApiResponse<Project>>(`/projects/${id}`);
-    return response.data.data!;
+    try {
+      const response = await this.api.get<ApiResponse<Project>>(`/projects/${id}`);
+      return response.data.data!;
+    } catch (error) {
+      console.warn(`Failed to fetch project ${id} from API, using fallback data:`, error);
+      const { mockProjects } = await import('../data/mockData');
+      const project = mockProjects.find(p => p._id === id || p.slug === id);
+      if (!project) {
+        throw new Error('Project not found');
+      }
+      return project;
+    }
   }
 
   private isFile(value: any): value is File {
