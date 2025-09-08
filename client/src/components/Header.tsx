@@ -38,9 +38,7 @@ const Header = () => {
               borderRadius: '0px',
                }}>
             </div>
-            {/* <span className="text-xl font-serif font-semibold text-primary-900">
-            S\Studio
-            </span> */}
+            <span className='font-medium text-xs border-l border-primary-400 pl-1 text-accent-500'>S/Studio</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -99,13 +97,13 @@ const Header = () => {
               <>
                 <Link
                   to="/auth"
-                  className="text-sm font-medium text-primary-700 hover:text-primary-900"
+                  className="btn-accent"
                 >
                   Sign in
                 </Link>
                 <Link
                   to="/auth?mode=signup"
-                  className="btn-primary"
+                  className="btn-secondary"
                 >
                   Sign up
                 </Link>
@@ -184,7 +182,7 @@ const Header = () => {
                   <Link
                     to="/auth?mode=signup"
                     onClick={() => setIsMenuOpen(false)}
-                    className="btn-primary mx-4"
+                    className="btn-secondary mx-4"
                   >
                     Sign up
                   </Link>

@@ -8,7 +8,7 @@ const About = () => {
         <div className="container-max section-padding">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
-              About S-Studio
+              About S/Studio
             </h1>
             <p className="text-xl md:text-2xl opacity-90">
               Creating timeless architectural solutions with passion, precision, and purpose.
@@ -47,7 +47,7 @@ const About = () => {
               <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden">
                 <img
                   src="/api/placeholder/600/600"
-                  alt="S Studio"
+                  alt="S/Studio"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -230,7 +230,7 @@ const About = () => {
             and discuss how we can bring it to life.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="btn-primary">
+            <Link to="/contact" className="btn-accent">
               Start Your Project
             </Link>
             <Link to="/projects" className="btn-secondary">

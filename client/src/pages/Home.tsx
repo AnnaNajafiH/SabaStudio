@@ -29,13 +29,13 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/projects"
-                className="btn-primary text-lg px-8 py-4"
+                className="btn-secondary text-lg px-8 py-4"
               >
                 View Our Work
               </Link>
               <Link
                 to="/contact"
-                className="btn-secondary text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20"
+                className="btn-accent text-lg px-8 py-4  hover:bg-accent-600 hover:text-white"
               >
                 Start Your Project
               </Link>
@@ -171,7 +171,7 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-16">
-            <Link to="/services" className="inline-flex items-center bg-primary-900 hover:bg-primary-800 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
+            <Link to="/services" className="inline-flex items-center px-8 py-4 rounded-lg font-semibold transition-colors btn-secondary">
               Explore All Services
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -320,7 +320,7 @@ const Home = () => {
           <div className="text-center mt-16">
             <Link 
               to="/projects" 
-              className="inline-flex items-center bg-primary-900 hover:bg-primary-800 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+              className="inline-flex items-center btn-secondary px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
             >
               Explore All Projects
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

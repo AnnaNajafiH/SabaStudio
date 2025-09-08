@@ -35,11 +35,11 @@ const Services = () => {
             {services.map((service) => (
               <div key={service.id} className="card group hover:shadow-xl transition-shadow p-4">
                 <div className="flex items-start space-x-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-900 to-accent-600 rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary-800 to-accent-600 rounded-lg flex items-center justify-center text-white flex-shrink-0">
                     {service.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-semibold text-primary-900 mb-4 group-hover:text-accent-600 transition-colors">
+                    <h3 className="text-2xl font-semibold text-primary-800 mb-4 group-hover:text-accent-600 transition-colors">
                       {service.title}
                     </h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">
@@ -116,7 +116,7 @@ const Services = () => {
               </h2>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-6 h-6 bg-primary-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
@@ -128,7 +128,7 @@ const Services = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-6 h-6 bg-primary-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
@@ -140,7 +140,7 @@ const Services = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-6 h-6 bg-primary-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
@@ -152,7 +152,7 @@ const Services = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-6 h-6 bg-primary-900 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
@@ -198,10 +198,10 @@ const Services = () => {
             Let's discuss your vision and explore how our architectural expertise can bring your project to life.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="btn-secondary bg-white text-primary-900 hover:bg-gray-100">
+            <Link to="/contact" className="btn-accent hover:bg-accent-600 hover:text-white">
               Get In Touch
             </Link>
-            <Link to="/projects" className="btn-secondary border-white text-white hover:bg-white/10">
+            <Link to="/projects" className="btn-secondary border-white text-white hover:bg-white hover:text-accent-600">
               View Our Work
             </Link>
           </div>
